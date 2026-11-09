@@ -1,5 +1,6 @@
 export const profile = {
   name: "Ash",
+  role: "A New Developer",
   tagline: "Discord & Minecraft Staff · Community Manager",
   discordUsername: "a_sh_9",
   /** Numeric Discord user ID. When set, the contact button opens the profile directly. */

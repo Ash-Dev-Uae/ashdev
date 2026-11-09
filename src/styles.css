@@ -180,6 +180,16 @@
   }
 }
 
+/* Framed intro panel in the hero */
+@utility hero-box {
+  background: color-mix(in oklab, var(--card) 82%, transparent);
+  backdrop-filter: blur(6px);
+  border: 3px solid var(--primary);
+  box-shadow:
+    8px 8px 0 0 var(--accent),
+    var(--glow-primary);
+}
+
 @utility glow-primary {
   box-shadow: var(--glow-primary);
 }

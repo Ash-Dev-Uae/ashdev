@@ -131,17 +131,21 @@ function Index() {
           />
         ))}
 
-        <div className="relative mx-auto w-full max-w-6xl px-5 pt-20">
-          <div className="animate-pop-in inline-flex items-center gap-2 border-2 border-primary bg-background/70 px-3 py-1 font-pixel text-[10px] text-primary sm:text-xs">
+        <div className="relative mx-auto w-full max-w-3xl px-5 pt-20">
+          <div className="hero-box animate-pop-in p-6 text-center sm:p-10">
+          <div className="inline-flex items-center gap-2 border-2 border-primary bg-background/70 px-3 py-1 font-pixel text-[10px] text-primary sm:text-xs">
             <span className="size-2 bg-primary animate-blink" /> ONLINE · OPEN TO STAFF ROLES
           </div>
-          <h1 className="mt-6 text-4xl font-bold leading-tight sm:text-6xl md:text-7xl">
-            <span className="block animate-in fade-in slide-in-from-bottom-4 duration-700">Hey, I'm</span>
+          <h1 className="mt-6 text-3xl font-bold leading-tight sm:text-5xl md:text-6xl">
+            <span className="block animate-in fade-in slide-in-from-bottom-4 duration-700">Hello, I am</span>
             <span className="block text-gradient animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
-              {profile.name}.
+              {profile.name},
+            </span>
+            <span className="mt-2 block text-xl text-gold animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both sm:text-3xl">
+              {profile.role}
             </span>
           </h1>
-          <p className="mt-5 min-h-[2.5em] max-w-xl font-display text-lg text-muted-foreground sm:text-2xl">
+          <p className="mx-auto mt-5 min-h-[2.5em] max-w-xl font-display text-base text-muted-foreground sm:text-xl">
             <Typewriter
               words={[
                 "Discord Community Manager",
@@ -151,13 +155,14 @@ function Index() {
               ]}
             />
           </p>
-          <div className="mt-8 flex flex-wrap gap-4">
+          <div className="mt-6 flex flex-wrap justify-center gap-4">
             <a href="#servers" className="pixel-btn bg-primary px-5 py-3 text-xs text-primary-foreground">
-              VIEW SERVERS
+              MY EXPERIENCE
             </a>
             <a href="#contact" className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground">
               CONTACT ME
             </a>
+          </div>
           </div>
         </div>
 
@@ -200,23 +205,27 @@ function Index() {
       {/* Servers */}
       <section id="servers" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
         <SectionTitle kicker="// STAFF EXPERIENCE" title="Servers I've run & staffed" />
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
           {servers.map((s, i) => {
             const t = tierStyle[s.tier];
             const Icon = t.icon;
             return (
               <Reveal key={s.server} delay={(i % 3) * 120}>
-                <article className="pixel-card group h-full p-6">
-                  <div className="flex items-start justify-between">
-                    <div className="grid size-12 place-items-center border-2 border-border bg-secondary transition-transform duration-300 group-hover:rotate-12">
-                      <Icon className="size-6 text-primary" />
+                <article className="pixel-card group flex aspect-square flex-col justify-between p-3 sm:p-6">
+                  <div className="flex items-start justify-between gap-2">
+                    <div className="grid size-9 place-items-center border-2 border-border bg-secondary transition-transform duration-300 group-hover:rotate-12 sm:size-12">
+                      <Icon className="size-4 text-primary sm:size-6" />
                     </div>
-                    <span className={cn("px-2 py-1 font-pixel text-[10px]", t.cls)}>{t.label}</span>
+                    <span className={cn("px-1.5 py-1 font-pixel text-[9px] sm:px-2 sm:text-[10px]", t.cls)}>
+                      {t.label}
+                    </span>
                   </div>
-                  <h3 className="mt-5 text-xl font-bold">{s.server}</h3>
-                  <p className="mt-1 text-primary">{s.position}</p>
-                  <div className="mt-5 flex items-center gap-2 border-t-2 border-dashed border-border pt-4 text-sm text-muted-foreground">
-                    <Users className="size-4" /> {s.members} members
+                  <div>
+                    <h3 className="text-base font-bold leading-tight sm:text-2xl">{s.server}</h3>
+                    <p className="mt-1 text-sm text-primary sm:text-base">{s.position}</p>
+                  </div>
+                  <div className="flex items-center gap-1.5 border-t-2 border-dashed border-border pt-2 text-xs text-muted-foreground sm:gap-2 sm:pt-4 sm:text-sm">
+                    <Users className="size-3.5 shrink-0 sm:size-4" /> {s.members}
                   </div>
                 </article>
               </Reveal>
@@ -254,11 +263,11 @@ function Index() {
               <Shield className="size-6 text-accent" />
               <h3 className="text-2xl font-bold">Staff Roles Held</h3>
             </div>
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {roles.map((r, i) => (
                 <span
                   key={r}
-                  className="animate-pop-in border-2 border-accent bg-accent/15 px-3 py-2 font-pixel text-xs"
+                  className="animate-pop-in grid aspect-square place-items-center border-2 border-accent bg-accent/15 p-2 text-center font-pixel text-[10px] leading-snug sm:text-xs"
                   style={{ animationDelay: `${i * 90}ms` }}
                 >
                   {r}
@@ -295,12 +304,13 @@ function Index() {
       {/* Additional */}
       <section id="more" className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24">
         <SectionTitle kicker="// ADDITIONAL" title="Also experienced in" />
-        <div className="flex flex-wrap gap-3">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
           {extras.map((e, i) => (
-            <Reveal key={e} delay={i * 80}>
-              <span className="pixel-card inline-flex items-center gap-2 px-4 py-3 text-sm">
-                <Sparkles className="size-4 text-gold" /> {e}
-              </span>
+            <Reveal key={e} delay={(i % 3) * 80}>
+              <div className="pixel-card flex aspect-square flex-col items-center justify-center gap-3 p-3 text-center text-sm">
+                <Sparkles className="size-6 text-gold" />
+                <span>{e}</span>
+              </div>
             </Reveal>
           ))}
         </div>
