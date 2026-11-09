@@ -21,6 +21,7 @@ import heroImg from "@/assets/hero-pixel-night.jpg";
 import { Reveal, Counter, Typewriter } from "@/components/portfolio/motion";
 import { DiscordButton } from "@/components/portfolio/DiscordButton";
 import { TapBurst } from "@/components/portfolio/TapBurst";
+import { CursorGlow } from "@/components/portfolio/CursorGlow";
 import {
   profile,
   servers,
@@ -93,6 +94,7 @@ function Index() {
   return (
     <main className="overflow-x-hidden">
       <TapBurst />
+      <CursorGlow />
       {/* Nav */}
       <nav className="fixed inset-x-0 top-0 z-50 border-b-2 border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">

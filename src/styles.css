@@ -274,6 +274,48 @@
   animation: tap-ring 0.45s steps(5) forwards;
 }
 
+/* Glowing yellow circle that follows cursor / finger (see CursorGlow.tsx) */
+.cursor-glow {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 90;
+  width: 160px;
+  height: 160px;
+  border-radius: 9999px;
+  pointer-events: none;
+  background: radial-gradient(
+    circle,
+    color-mix(in oklab, var(--gold) 45%, transparent) 0%,
+    color-mix(in oklab, var(--gold) 15%, transparent) 35%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  will-change: transform;
+  display: grid;
+  place-items: center;
+}
+.cursor-glow.is-active {
+  opacity: 1;
+}
+.cursor-glow-core {
+  width: 22px;
+  height: 22px;
+  border-radius: 9999px;
+  border: 2px solid var(--gold);
+  background: color-mix(in oklab, var(--gold) 35%, transparent);
+  box-shadow:
+    0 0 12px var(--gold),
+    0 0 28px color-mix(in oklab, var(--gold) 70%, transparent);
+  animation: glow-breathe 1.8s ease-in-out infinite;
+}
+@keyframes glow-breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+
 /* Touch screens have no hover: give cards and buttons a press reaction */
 @media (hover: none) {
   .pixel-card:active {
