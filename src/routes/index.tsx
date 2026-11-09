@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import heroImg from "@/assets/hero-pixel-night.jpg";
 import { Reveal, Counter, Typewriter } from "@/components/portfolio/motion";
+import { DiscordButton } from "@/components/portfolio/DiscordButton";
 import {
   profile,
   servers,
@@ -101,6 +102,7 @@ function Index() {
             <a href="#servers" className="hover:text-primary">Servers</a>
             <a href="#skills" className="hover:text-primary">Skills</a>
             <a href="#more" className="hover:text-primary">More</a>
+            <a href="#contact" className="text-accent hover:text-primary">Contact</a>
           </div>
         </div>
       </nav>
@@ -149,8 +151,8 @@ function Index() {
             <a href="#servers" className="pixel-btn bg-primary px-5 py-3 text-xs text-primary-foreground">
               VIEW SERVERS
             </a>
-            <a href="#skills" className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground">
-              STAFF SKILLS
+            <a href="#contact" className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground">
+              CONTACT ME
             </a>
           </div>
         </div>
@@ -301,7 +303,7 @@ function Index() {
       </section>
 
       {/* CTA */}
-      <section className="border-t-2 border-border bg-card">
+      <section id="contact" className="scroll-mt-16 border-t-2 border-border bg-card">
         <Reveal className="mx-auto max-w-3xl px-5 py-20 text-center">
           <p className="font-pixel text-xs text-primary">// READY TO JOIN</p>
           <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
@@ -310,6 +312,9 @@ function Index() {
           <p className="mt-4 text-muted-foreground">
             Moderation, staff management, announcements and community growth — let's talk on Discord.
           </p>
+          <div className="mt-8">
+            <DiscordButton />
+          </div>
         </Reveal>
         <footer className="border-t-2 border-border py-6 text-center font-pixel text-[10px] text-muted-foreground">
           © {new Date().getFullYear()} {profile.name} · Built block by block
