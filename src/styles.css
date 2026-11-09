@@ -251,6 +251,42 @@
   animation: pop-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
+/* Tap burst (see TapBurst.tsx) */
+@keyframes tap-particle {
+  0% { opacity: 1; transform: translate(-50%, -50%) translate(0, 0) scale(1); }
+  70% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--dx), calc(var(--dy) + 24px)) scale(0.4); }
+}
+@keyframes tap-ring {
+  0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
+  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+}
+.tap-particle {
+  position: absolute;
+  box-shadow: 1px 1px 0 0 oklch(0.08 0.02 265);
+  animation: tap-particle 0.6s cubic-bezier(0.2, 0.7, 0.4, 1) forwards;
+}
+.tap-ring {
+  position: absolute;
+  width: 56px;
+  height: 56px;
+  border: 3px solid var(--primary);
+  animation: tap-ring 0.45s steps(5) forwards;
+}
+
+/* Touch screens have no hover: give cards and buttons a press reaction */
+@media (hover: none) {
+  .pixel-card:active {
+    transform: translate(-3px, -3px) scale(0.98);
+    box-shadow: 7px 7px 0 0 var(--primary);
+    border-color: var(--primary);
+  }
+  .pixel-card-accent:active {
+    box-shadow: 7px 7px 0 0 var(--accent);
+    border-color: var(--accent);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .reveal { opacity: 1; transform: none; transition: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
