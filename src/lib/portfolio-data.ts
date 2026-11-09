@@ -1,5 +1,5 @@
 export const profile = {
-  name: "Ashar",
+  name: "Ash",
   tagline: "Discord & Minecraft Staff · Community Manager",
 };
 

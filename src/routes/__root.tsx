@@ -81,9 +81,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Ashar — Discord & Minecraft Staff Portfolio" },
+      { title: "Ash — Discord & Minecraft Staff Portfolio" },
       { name: "description", content: "Discord and Minecraft staff & management portfolio." },
-      { property: "og:title", content: "Ashar — Discord & Minecraft Staff Portfolio" },
+      { property: "og:title", content: "Ash — Discord & Minecraft Staff Portfolio" },
       { property: "og:description", content: "Discord and Minecraft staff & management portfolio." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
