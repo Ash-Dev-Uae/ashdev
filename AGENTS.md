@@ -28,3 +28,7 @@ use the editor.
   own key and store it in Secrets.
 - **Secrets.** Lovable manages them. Do not put secret values in the repo.
 <!-- LOVABLE:END -->
+
+## Project rules
+- Portfolio content lives in `src/lib/portfolio-data.ts`; pages render from it so text edits never touch layout code.
+- Animation helpers (scroll reveal, counters, typewriter) live in `src/components/portfolio/motion.tsx`; keyframes/utilities in `src/styles.css`.

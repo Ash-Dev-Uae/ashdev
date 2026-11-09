@@ -1,23 +1,320 @@
 import { createFileRoute } from "@tanstack/react-router";
+import {
+  Crown,
+  Shield,
+  Gavel,
+  Flag,
+  Bug,
+  MessageSquareOff,
+  Handshake,
+  UserX,
+  LayoutPanelTop,
+  ClipboardCheck,
+  Megaphone,
+  Users,
+  ChevronDown,
+  Sparkles,
+  Pickaxe,
+  type LucideIcon,
+} from "lucide-react";
+import heroImg from "@/assets/hero-pixel-night.jpg";
+import { Reveal, Counter, Typewriter } from "@/components/portfolio/motion";
+import {
+  profile,
+  servers,
+  stats,
+  ownership,
+  roles,
+  skills,
+  extras,
+  type ServerRole,
+} from "@/lib/portfolio-data";
+import { cn } from "@/lib/utils";
 
-// The home route ships no og:image, so serve-time hosting can inject the
-// project's social preview (explicit og:image or latest screenshot).
 export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: `${profile.name} — Discord & Minecraft Staff Portfolio` },
+      {
+        name: "description",
+        content:
+          "Founder, admin, head manager and moderator across 70+ Discord and Minecraft servers. Staff management, moderation and community building.",
+      },
+      { property: "og:title", content: `${profile.name} — Discord & Minecraft Staff Portfolio` },
+      {
+        property: "og:description",
+        content: "Staff & management experience across 70+ Discord and Minecraft communities.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
   component: Index,
 });
 
-// IMPORTANT: Replace this placeholder. See ./README.md for routing conventions.
+const skillIcons: LucideIcon[] = [
+  Gavel,
+  Flag,
+  Bug,
+  MessageSquareOff,
+  Handshake,
+  UserX,
+  LayoutPanelTop,
+  ClipboardCheck,
+  Megaphone,
+];
+
+const tierStyle: Record<ServerRole["tier"], { label: string; cls: string; icon: LucideIcon }> = {
+  owner: { label: "OWNER", cls: "bg-gold text-background", icon: Crown },
+  lead: { label: "LEAD", cls: "bg-primary text-primary-foreground", icon: Shield },
+  staff: { label: "STAFF", cls: "bg-accent text-accent-foreground", icon: Gavel },
+};
+
+const blocks = [
+  { cls: "left-[6%] top-[22%] size-8 bg-primary", delay: "0s" },
+  { cls: "left-[82%] top-[18%] size-6 bg-accent", delay: "1.2s" },
+  { cls: "left-[14%] top-[68%] size-5 bg-gold", delay: "2.1s" },
+  { cls: "left-[88%] top-[62%] size-9 bg-primary/70", delay: "0.6s" },
+  { cls: "left-[48%] top-[12%] size-4 bg-accent/80", delay: "3s" },
+];
+
+function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
+  return (
+    <Reveal className="mb-10">
+      <p className="font-pixel text-xs tracking-widest text-primary">{kicker}</p>
+      <h2 className="mt-2 text-3xl font-bold sm:text-4xl">{title}</h2>
+    </Reveal>
+  );
+}
+
 function Index() {
   return (
-    <div
-      className="flex min-h-screen items-center justify-center"
-      style={{ backgroundColor: "#fcfbf8" }}
-    >
-      <img
-        data-lovable-blank-page-placeholder="REMOVE_THIS"
-        src="https://cdn.gpteng.co/blank-app-v1.svg"
-        alt="Your app will live here!"
-      />
-    </div>
+    <main className="overflow-x-hidden">
+      {/* Nav */}
+      <nav className="fixed inset-x-0 top-0 z-50 border-b-2 border-border bg-background/80 backdrop-blur">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
+          <a href="#top" className="flex items-center gap-2 font-pixel text-sm">
+            <span className="inline-block size-3 bg-primary animate-pulse-glow" />
+            {profile.name}
+          </a>
+          <div className="hidden gap-6 font-pixel text-xs text-muted-foreground sm:flex">
+            <a href="#servers" className="hover:text-primary">Servers</a>
+            <a href="#skills" className="hover:text-primary">Skills</a>
+            <a href="#more" className="hover:text-primary">More</a>
+          </div>
+        </div>
+      </nav>
+
+      {/* Hero */}
+      <section id="top" className="relative flex min-h-[100svh] items-center">
+        <img
+          src={heroImg}
+          alt="Pixel art night landscape with a castle on a hill"
+          width={1920}
+          height={1088}
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-hero-fade" />
+        <div className="absolute inset-0 scanlines opacity-60" />
+        {blocks.map((b, i) => (
+          <span
+            key={i}
+            aria-hidden
+            className={cn("absolute animate-float-block shadow-[var(--shadow-pixel)]", b.cls)}
+            style={{ animationDelay: b.delay }}
+          />
+        ))}
+
+        <div className="relative mx-auto w-full max-w-6xl px-5 pt-20">
+          <div className="animate-pop-in inline-flex items-center gap-2 border-2 border-primary bg-background/70 px-3 py-1 font-pixel text-[10px] text-primary sm:text-xs">
+            <span className="size-2 bg-primary animate-blink" /> ONLINE · OPEN TO STAFF ROLES
+          </div>
+          <h1 className="mt-6 text-4xl font-bold leading-tight sm:text-6xl md:text-7xl">
+            <span className="block animate-in fade-in slide-in-from-bottom-4 duration-700">Hey, I'm</span>
+            <span className="block text-gradient animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
+              {profile.name}.
+            </span>
+          </h1>
+          <p className="mt-5 min-h-[2.5em] max-w-xl font-display text-lg text-muted-foreground sm:text-2xl">
+            <Typewriter
+              words={[
+                "Discord Community Manager",
+                "Minecraft Server Owner",
+                "Head Manager & Admin",
+                "Staff Team Builder",
+              ]}
+            />
+          </p>
+          <div className="mt-8 flex flex-wrap gap-4">
+            <a href="#servers" className="pixel-btn bg-primary px-5 py-3 text-xs text-primary-foreground">
+              VIEW SERVERS
+            </a>
+            <a href="#skills" className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground">
+              STAFF SKILLS
+            </a>
+          </div>
+        </div>
+
+        <a
+          href="#stats"
+          aria-label="Scroll down"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 text-muted-foreground animate-bob"
+        >
+          <ChevronDown className="size-7" />
+        </a>
+      </section>
+
+      {/* Stats */}
+      <section id="stats" className="relative mx-auto -mt-10 max-w-6xl px-5">
+        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
+          {stats.map((s, i) => (
+            <Reveal key={s.label} delay={i * 100}>
+              <div className="pixel-card p-5 text-center">
+                <div className="font-display text-3xl font-bold text-primary sm:text-4xl">
+                  <Counter to={s.value} suffix={s.suffix} />
+                </div>
+                <div className="mt-1 text-xs text-muted-foreground sm:text-sm">{s.label}</div>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* Marquee */}
+      <div className="mt-20 overflow-hidden border-y-2 border-border bg-card py-3">
+        <div className="flex w-max animate-marquee gap-10 font-pixel text-sm text-muted-foreground">
+          {[...servers, ...servers].map((s, i) => (
+            <span key={i} className="flex items-center gap-3">
+              <Pickaxe className="size-4 text-primary" /> {s.server}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* Servers */}
+      <section id="servers" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
+        <SectionTitle kicker="// STAFF EXPERIENCE" title="Servers I've run & staffed" />
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {servers.map((s, i) => {
+            const t = tierStyle[s.tier];
+            const Icon = t.icon;
+            return (
+              <Reveal key={s.server} delay={(i % 3) * 120}>
+                <article className="pixel-card group h-full p-6">
+                  <div className="flex items-start justify-between">
+                    <div className="grid size-12 place-items-center border-2 border-border bg-secondary transition-transform duration-300 group-hover:rotate-12">
+                      <Icon className="size-6 text-primary" />
+                    </div>
+                    <span className={cn("px-2 py-1 font-pixel text-[10px]", t.cls)}>{t.label}</span>
+                  </div>
+                  <h3 className="mt-5 text-xl font-bold">{s.server}</h3>
+                  <p className="mt-1 text-primary">{s.position}</p>
+                  <div className="mt-5 flex items-center gap-2 border-t-2 border-dashed border-border pt-4 text-sm text-muted-foreground">
+                    <Users className="size-4" /> {s.members} members
+                  </div>
+                </article>
+              </Reveal>
+            );
+          })}
+        </div>
+        <Reveal delay={200}>
+          <p className="mt-10 text-center font-pixel text-sm text-muted-foreground">
+            + worked with <span className="text-primary">70+</span> servers in total
+          </p>
+        </Reveal>
+      </section>
+
+      {/* Ownership + Roles */}
+      <section className="mx-auto grid max-w-6xl gap-6 px-5 lg:grid-cols-2">
+        <Reveal>
+          <div className="pixel-card h-full p-7">
+            <div className="flex items-center gap-3">
+              <Crown className="size-6 text-gold" />
+              <h3 className="text-2xl font-bold">Ownership & Management</h3>
+            </div>
+            <ul className="mt-6 space-y-3">
+              {ownership.map((o) => (
+                <li key={o} className="flex items-start gap-3">
+                  <span className="mt-2 size-2 shrink-0 bg-primary" />
+                  <span className="text-muted-foreground">{o}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </Reveal>
+        <Reveal delay={150}>
+          <div className="pixel-card pixel-card-accent h-full p-7">
+            <div className="flex items-center gap-3">
+              <Shield className="size-6 text-accent" />
+              <h3 className="text-2xl font-bold">Staff Roles Held</h3>
+            </div>
+            <div className="mt-6 flex flex-wrap gap-3">
+              {roles.map((r, i) => (
+                <span
+                  key={r}
+                  className="animate-pop-in border-2 border-accent bg-accent/15 px-3 py-2 font-pixel text-xs"
+                  style={{ animationDelay: `${i * 90}ms` }}
+                >
+                  {r}
+                </span>
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Skills */}
+      <section id="skills" className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24">
+        <SectionTitle kicker="// STAFF SKILLS" title="What I bring to a team" />
+        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {skills.map((s, i) => {
+            const Icon = skillIcons[i] ?? Sparkles;
+            return (
+              <Reveal key={s.title} delay={(i % 3) * 100}>
+                <div className="pixel-card group flex h-full gap-4 p-5">
+                  <div className="grid size-11 shrink-0 place-items-center bg-primary/15 transition-colors group-hover:bg-primary">
+                    <Icon className="size-5 text-primary transition-colors group-hover:text-primary-foreground" />
+                  </div>
+                  <div>
+                    <h3 className="font-bold">{s.title}</h3>
+                    <p className="mt-1 text-sm text-muted-foreground">{s.text}</p>
+                  </div>
+                </div>
+              </Reveal>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Additional */}
+      <section id="more" className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24">
+        <SectionTitle kicker="// ADDITIONAL" title="Also experienced in" />
+        <div className="flex flex-wrap gap-3">
+          {extras.map((e, i) => (
+            <Reveal key={e} delay={i * 80}>
+              <span className="pixel-card inline-flex items-center gap-2 px-4 py-3 text-sm">
+                <Sparkles className="size-4 text-gold" /> {e}
+              </span>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="border-t-2 border-border bg-card">
+        <Reveal className="mx-auto max-w-3xl px-5 py-20 text-center">
+          <p className="font-pixel text-xs text-primary">// READY TO JOIN</p>
+          <h2 className="mt-3 text-3xl font-bold sm:text-4xl">
+            Need a reliable staff member for your <span className="text-gradient">server</span>?
+          </h2>
+          <p className="mt-4 text-muted-foreground">
+            Moderation, staff management, announcements and community growth — let's talk on Discord.
+          </p>
+        </Reveal>
+        <footer className="border-t-2 border-border py-6 text-center font-pixel text-[10px] text-muted-foreground">
+          © {new Date().getFullYear()} {profile.name} · Built block by block
+        </footer>
+      </section>
+    </main>
   );
 }
