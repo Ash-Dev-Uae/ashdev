@@ -3,7 +3,7 @@ export const profile = {
   tagline: "Discord & Minecraft Staff · Community Manager",
   discordUsername: "a_sh_9",
   /** Numeric Discord user ID. When set, the contact button opens the profile directly. */
-  discordId: "" as string,
+  discordId: "1462437982123331615" as string,
 };
 
 export type ServerRole = {
