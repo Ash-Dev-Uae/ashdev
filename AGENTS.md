@@ -32,3 +32,5 @@ use the editor.
 ## Project rules
 - Portfolio content lives in `src/lib/portfolio-data.ts`; pages render from it so text edits never touch layout code.
 - Animation helpers (scroll reveal, counters, typewriter) live in `src/components/portfolio/motion.tsx`; keyframes/utilities in `src/styles.css`.
+
+- AI chat: server route `src/routes/api/chat.ts` streams via AI Gateway; system prompt built from portfolio data in `src/lib/ash-prompt.ts` so answers stay in sync with site content. Chats saved in browser localStorage (no backend).

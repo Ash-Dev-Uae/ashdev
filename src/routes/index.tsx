@@ -22,6 +22,7 @@ import { Reveal, Counter, Typewriter } from "@/components/portfolio/motion";
 import { DiscordButton } from "@/components/portfolio/DiscordButton";
 import { TapBurst } from "@/components/portfolio/TapBurst";
 import { CursorGlow } from "@/components/portfolio/CursorGlow";
+import { AskAsh } from "@/components/portfolio/AskAsh";
 import {
   profile,
   servers,
@@ -106,6 +107,7 @@ function Index() {
             <a href="#servers" className="hover:text-primary">Servers</a>
             <a href="#skills" className="hover:text-primary">Skills</a>
             <a href="#more" className="hover:text-primary">More</a>
+            <a href="#ask" className="hover:text-primary">Ask AI</a>
             <a href="#contact" className="text-accent hover:text-primary">Contact</a>
           </div>
         </div>
@@ -314,6 +316,13 @@ function Index() {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      {/* Ask AI */}
+      <section id="ask" className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24">
+        <p className="font-pixel text-xs text-primary">// ASK ASHBOT</p>
+        <h2 className="mt-3 mb-6 text-3xl font-bold sm:text-4xl">Questions about my experience?</h2>
+        <AskAsh />
       </section>
 
       {/* CTA */}
