@@ -13,13 +13,11 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey =
-          process.env["GEMINI_API_KEY"] ??
-          process.env["Gemini_key_api"];
+        const apiKey = process.env["OPENROUTER_API_KEY"];
 
         if (!apiKey) {
           return Response.json(
-            { error: "Gemini API key is missing." },
+            { error: "OpenRouter API key is missing." },
             { status: 500 },
           );
         }
@@ -35,17 +33,16 @@ export const Route = createFileRoute("/api/chat")({
           );
         }
 
-        const gemini = createOpenAI({
-          name: "gemini",
-          baseURL:
-            "https://generativelanguage.googleapis.com/v1beta/openai/",
+        const openrouter = createOpenAI({
+          name: "openrouter",
+          baseURL: "https://openrouter.ai/api/v1",
           apiKey,
         });
 
         const messages = parsed.data.messages as UIMessage[];
 
         const result = streamText({
-          model: gemini.chat("gemini-3.5-flash-lite"),
+          model: openrouter.chat("openai/gpt-oss-20b"),
           system: buildSystemPrompt(parsed.data.focus),
           messages: await convertToModelMessages(messages),
           abortSignal: request.signal,
@@ -55,16 +52,16 @@ export const Route = createFileRoute("/api/chat")({
         return result.toUIMessageStreamResponse({
           originalMessages: messages,
           onError: (err) => {
-            console.error("AshBot Gemini API error:", err);
+            console.error("AshBot OpenRouter API error:", err);
 
             const status = (err as { statusCode?: number })?.statusCode;
 
             if (status === 429) {
-              return "Too many questions right now. Try again shortly.";
+              return "Too many requests. Please try again shortly.";
             }
 
             if (status === 401 || status === 403) {
-              return "Gemini authentication failed. Check your API key.";
+              return "OpenRouter authentication failed. Check your API key.";
             }
 
             return "Something went wrong. Please try again.";
