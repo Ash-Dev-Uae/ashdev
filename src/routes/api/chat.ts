@@ -1,4 +1,3 @@
-
 import { createFileRoute } from "@tanstack/react-router";
 import { createOpenAI } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
@@ -37,21 +36,10 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         const gemini = createOpenAI({
-  name: "gemini",
-  baseURL:
-    "https://generativelanguage.googleapis.com/v1beta/openai/",
-  apiKey,
-});
-          fetch: async (input, init) => {
-            const response = await fetch(input, init);
-            console.error(
-              "Gemini diagnostic:",
-              input.toString(),
-              response.status,
-              await response.clone().text(),
-            );
-            return response;
-          },
+          name: "gemini",
+          baseURL:
+            "https://generativelanguage.googleapis.com/v1beta/openai/",
+          apiKey,
         });
 
         const messages = parsed.data.messages as UIMessage[];
@@ -67,21 +55,20 @@ export const Route = createFileRoute("/api/chat")({
         return result.toUIMessageStreamResponse({
           originalMessages: messages,
           onError: (err) => {
-  console.error("AshBot Gemini API error:", err);
+            console.error("AshBot Gemini API error:", err);
 
-  const status = (err as { statusCode?: number })?.statusCode;
+            const status = (err as { statusCode?: number })?.statusCode;
 
-  if (status === 429) {
-    return "Too many questions right now. Try again shortly.";
-  }
+            if (status === 429) {
+              return "Too many questions right now. Try again shortly.";
+            }
 
-  if (status === 401 || status === 403) {
-    return "Gemini authentication failed. Check your API key.";
-  }
+            if (status === 401 || status === 403) {
+              return "Gemini authentication failed. Check your API key.";
+            }
 
-  return "Something went wrong. Please try again.";
-},
-          
+            return "Something went wrong. Please try again.";
+          },
         });
       },
     },
