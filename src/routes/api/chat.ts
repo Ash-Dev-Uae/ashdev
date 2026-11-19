@@ -37,6 +37,7 @@ export const Route = createFileRoute("/api/chat")({
         }
 
         const gemini = createOpenAI({
+  name: "gemini",
           baseURL:
             "https://generativelanguage.googleapis.com/v1beta/openai/",
           apiKey,
