@@ -56,7 +56,7 @@ export const Route = createFileRoute("/api/chat")({
         const messages = parsed.data.messages as UIMessage[];
 
         const result = streamText({
-          model: gemini.chat("gemini-2.5-flash"),
+          model: gemini.chat("gemini-3.8-flash"),
           system: buildSystemPrompt(parsed.data.focus),
           messages: await convertToModelMessages(messages),
           abortSignal: request.signal,
