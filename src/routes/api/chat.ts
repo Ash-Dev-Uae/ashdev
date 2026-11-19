@@ -69,7 +69,7 @@ export const Route = createFileRoute("/api/chat")({
 
   return "Something went wrong. Please try again.";
 },
-          },
+          
         });
       },
     },
