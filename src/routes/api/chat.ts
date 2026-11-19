@@ -14,24 +14,21 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = process.env["GEMINI_API_KEY"];
+        // Lovable's AI gateway authenticates with the server-side LOVABLE_API_KEY.
+        // Never expose this secret to browser code.
+        const apiKey = process.env["LOVABLE_API_KEY"];
 
         if (!apiKey) {
           return Response.json(
-            { error: "AI is not configured." },
-            { status: 500 }
+            { error: "AI is not configured. Add the LOVABLE_API_KEY secret to this project." },
+            { status: 500 },
           );
         }
 
-        const parsed = Body.safeParse(
-          await request.json().catch(() => null)
-        );
+        const parsed = Body.safeParse(await request.json().catch(() => null));
 
         if (!parsed.success) {
-          return Response.json(
-            { error: "Invalid request." },
-            { status: 400 }
-          );
+          return Response.json({ error: "Invalid request." }, { status: 400 });
         }
 
         const runId = createLovableAiGatewayRunIdFetch();
@@ -71,7 +68,7 @@ export const Route = createFileRoute("/api/chat")({
             const status = (err as { statusCode?: number })?.statusCode;
 
             if (status === 429) {
-              return "Too many questions right now — try again in a moment.";
+              return "Too many questions right now. Please try again in a moment.";
             }
 
             if (status === 402 || status === 403) {
@@ -85,4 +82,3 @@ export const Route = createFileRoute("/api/chat")({
     },
   },
 });
-
