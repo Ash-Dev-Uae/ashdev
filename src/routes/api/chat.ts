@@ -1,4 +1,3 @@
-import { env } from "cloudflare:workers";
 import { createFileRoute } from "@tanstack/react-router";
 import { createOpenAI } from "@ai-sdk/openai";
 import { convertToModelMessages, streamText, type UIMessage } from "ai";
@@ -15,7 +14,7 @@ export const Route = createFileRoute("/api/chat")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const apiKey = env.GEMINI_API_KEY;
+        const apiKey = process.env["GEMINI_API_KEY"];
 
         if (!apiKey) {
           return Response.json(
