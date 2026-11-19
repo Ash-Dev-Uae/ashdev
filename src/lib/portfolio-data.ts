@@ -37,7 +37,16 @@ export const ownership = [
   "Staff team management & coordination",
 ];
 
-export const roles = ["Administrator", "Moderator", "Trainee", "Builder", "HoneyMC Staff Applicant"];
+// Server names and exact staff titles were not supplied for these communities.
+export const additionalStaffExperience = [400, 90, 45];
+
+export const roles = [
+  "Administrator",
+  "Moderator",
+  "Trainee",
+  "Builder",
+  "HoneyMC Staff Applicant",
+];
 
 export const skills = [
   { title: "Rule Enforcement", text: "Moderating communities and enforcing server rules fairly." },
@@ -58,4 +67,5 @@ export const extras = [
   "Creating staff panels",
   "Professional announcements",
   "Staff recruitment & coordination",
+  "Discord tickets & punishments",
 ];

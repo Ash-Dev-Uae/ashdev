@@ -1,4 +1,13 @@
-import { extras, ownership, profile, roles, servers, skills, stats } from "@/lib/portfolio-data";
+import {
+  additionalStaffExperience,
+  extras,
+  ownership,
+  profile,
+  roles,
+  servers,
+  skills,
+  stats,
+} from "@/lib/portfolio-data";
 
 export function buildSystemPrompt(focus?: string) {
   const lines = [
@@ -8,6 +17,11 @@ export function buildSystemPrompt(focus?: string) {
     `Name: ${profile.name} — ${profile.role}. ${profile.tagline}`,
     "Servers:",
     ...servers.map((s) => `- ${s.server}: ${s.position} (${s.members} members)`),
+    ...additionalStaffExperience.map(
+      (members) =>
+        `- Staffed a ${members}-member server; its name and exact role are not provided.`,
+    ),
+    "HoneyMC was a staff application, not a confirmed staff position. Do not imply Ash worked there.",
     "Stats:",
     ...stats.map((s) => `- ${s.value}${s.suffix} ${s.label}`),
     "Ownership:",
@@ -18,7 +32,10 @@ export function buildSystemPrompt(focus?: string) {
     `Also experienced in: ${extras.join(", ")}`,
   ];
   if (focus?.trim()) {
-    lines.push("", `The visitor is asking specifically about this server or role: "${focus.trim().slice(0, 100)}". Focus your answers on it.`);
+    lines.push(
+      "",
+      `The visitor is asking specifically about this server or role: "${focus.trim().slice(0, 100)}". Focus your answers on it.`,
+    );
   }
   return lines.join("\n");
 }

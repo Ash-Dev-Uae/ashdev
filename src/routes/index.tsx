@@ -31,9 +31,12 @@ import {
   roles,
   skills,
   extras,
+  additionalStaffExperience,
   type ServerRole,
 } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -92,10 +95,12 @@ function SectionTitle({ kicker, title }: { kicker: string; title: string }) {
 }
 
 function Index() {
+  const [chatOpen, setChatOpen] = useState(false);
   return (
     <main className="overflow-x-hidden">
       <TapBurst />
       <CursorGlow />
+      <AskAsh open={chatOpen} onOpenChange={setChatOpen} />
       {/* Nav */}
       <nav className="fixed inset-x-0 top-0 z-50 border-b-2 border-border bg-background/80 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
@@ -104,11 +109,25 @@ function Index() {
             {profile.name}
           </a>
           <div className="hidden gap-6 font-pixel text-xs text-muted-foreground sm:flex">
-            <a href="#servers" className="hover:text-primary">Servers</a>
-            <a href="#skills" className="hover:text-primary">Skills</a>
-            <a href="#more" className="hover:text-primary">More</a>
-            <a href="#ask" className="hover:text-primary">Ask AI</a>
-            <a href="#contact" className="text-accent hover:text-primary">Contact</a>
+            <a href="#servers" className="hover:text-primary">
+              Servers
+            </a>
+            <a href="#skills" className="hover:text-primary">
+              Skills
+            </a>
+            <a href="#more" className="hover:text-primary">
+              More
+            </a>
+            <Button
+              variant="ghost"
+              onClick={() => setChatOpen(true)}
+              className="h-auto p-0 font-pixel text-xs hover:bg-transparent hover:text-primary"
+            >
+              Ask AI
+            </Button>
+            <a href="#contact" className="text-accent hover:text-primary">
+              Contact
+            </a>
           </div>
         </div>
       </nav>
@@ -135,36 +154,44 @@ function Index() {
 
         <div className="relative mx-auto w-full max-w-3xl px-5 pt-20">
           <div className="hero-box animate-pop-in p-6 text-center sm:p-10">
-          <div className="inline-flex items-center gap-2 border-2 border-primary bg-background/70 px-3 py-1 font-pixel text-[10px] text-primary sm:text-xs">
-            <span className="size-2 bg-primary animate-blink" /> ONLINE · OPEN TO STAFF ROLES
-          </div>
-          <h1 className="mt-6 text-3xl font-bold leading-tight sm:text-5xl md:text-6xl">
-            <span className="block animate-in fade-in slide-in-from-bottom-4 duration-700">Hello, I am</span>
-            <span className="block text-gradient animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
-              {profile.name},
-            </span>
-            <span className="mt-2 block text-xl text-gold animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both sm:text-3xl">
-              {profile.role}
-            </span>
-          </h1>
-          <p className="mx-auto mt-5 min-h-[2.5em] max-w-xl font-display text-base text-muted-foreground sm:text-xl">
-            <Typewriter
-              words={[
-                "Discord Community Manager",
-                "Minecraft Server Owner",
-                "Head Manager & Admin",
-                "Staff Team Builder",
-              ]}
-            />
-          </p>
-          <div className="mt-6 flex flex-wrap justify-center gap-4">
-            <a href="#servers" className="pixel-btn bg-primary px-5 py-3 text-xs text-primary-foreground">
-              MY EXPERIENCE
-            </a>
-            <a href="#contact" className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground">
-              CONTACT ME
-            </a>
-          </div>
+            <div className="inline-flex items-center gap-2 border-2 border-primary bg-background/70 px-3 py-1 font-pixel text-[10px] text-primary sm:text-xs">
+              <span className="size-2 bg-primary animate-blink" /> ONLINE · OPEN TO STAFF ROLES
+            </div>
+            <h1 className="mt-6 text-3xl font-bold leading-tight sm:text-5xl md:text-6xl">
+              <span className="block animate-in fade-in slide-in-from-bottom-4 duration-700">
+                Hello, I am
+              </span>
+              <span className="block text-gradient animate-in fade-in slide-in-from-bottom-4 duration-700 delay-150 fill-mode-both">
+                {profile.name},
+              </span>
+              <span className="mt-2 block text-xl text-gold animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 fill-mode-both sm:text-3xl">
+                {profile.role}
+              </span>
+            </h1>
+            <p className="mx-auto mt-5 min-h-[2.5em] max-w-xl font-display text-base text-muted-foreground sm:text-xl">
+              <Typewriter
+                words={[
+                  "Discord Community Manager",
+                  "Minecraft Server Owner",
+                  "Head Manager & Admin",
+                  "Staff Team Builder",
+                ]}
+              />
+            </p>
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
+              <a
+                href="#servers"
+                className="pixel-btn bg-primary px-5 py-3 text-xs text-primary-foreground"
+              >
+                MY EXPERIENCE
+              </a>
+              <a
+                href="#contact"
+                className="pixel-btn bg-accent px-5 py-3 text-xs text-accent-foreground"
+              >
+                CONTACT ME
+              </a>
+            </div>
           </div>
         </div>
 
@@ -218,7 +245,12 @@ function Index() {
                     <div className="grid size-9 place-items-center border-2 border-border bg-secondary transition-transform duration-300 group-hover:rotate-12 sm:size-12">
                       <Icon className="size-4 text-primary sm:size-6" />
                     </div>
-                    <span className={cn("px-1.5 py-1 font-pixel text-[9px] sm:px-2 sm:text-[10px]", t.cls)}>
+                    <span
+                      className={cn(
+                        "px-1.5 py-1 font-pixel text-[9px] sm:px-2 sm:text-[10px]",
+                        t.cls,
+                      )}
+                    >
                       {t.label}
                     </span>
                   </div>
@@ -235,6 +267,18 @@ function Index() {
           })}
         </div>
         <Reveal delay={200}>
+          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
+            {additionalStaffExperience.map((members) => (
+              <article
+                key={members}
+                className="pixel-card flex aspect-square flex-col items-center justify-center gap-3 p-3 text-center"
+              >
+                <Users className="size-6 text-accent" />
+                <h3 className="font-bold">{members}-member server</h3>
+                <p className="text-sm text-muted-foreground">Staff experience</p>
+              </article>
+            ))}
+          </div>
           <p className="mt-10 text-center font-pixel text-sm text-muted-foreground">
             + worked with <span className="text-primary">70+</span> servers in total
           </p>
@@ -318,13 +362,6 @@ function Index() {
         </div>
       </section>
 
-      {/* Ask AI */}
-      <section id="ask" className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24">
-        <p className="font-pixel text-xs text-primary">// ASK ASHBOT</p>
-        <h2 className="mt-3 mb-6 text-3xl font-bold sm:text-4xl">Questions about my experience?</h2>
-        <AskAsh />
-      </section>
-
       {/* CTA */}
       <section id="contact" className="scroll-mt-16 border-t-2 border-border bg-card">
         <Reveal className="mx-auto max-w-3xl px-5 py-20 text-center">
@@ -333,7 +370,8 @@ function Index() {
             Need a reliable staff member for your <span className="text-gradient">server</span>?
           </h2>
           <p className="mt-4 text-muted-foreground">
-            Moderation, staff management, announcements and community growth — let's talk on Discord.
+            Moderation, staff management, announcements and community growth — let's talk on
+            Discord.
           </p>
           <div className="mt-8">
             <DiscordButton />
