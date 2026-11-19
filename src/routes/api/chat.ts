@@ -55,17 +55,20 @@ export const Route = createFileRoute("/api/chat")({
         return result.toUIMessageStreamResponse({
           originalMessages: messages,
           onError: (err) => {
-            const status = (err as { statusCode?: number })?.statusCode;
+  console.error("AshBot Gemini API error:", err);
 
-            if (status === 429) {
-              return "Too many questions right now. Try again shortly.";
-            }
+  const status = (err as { statusCode?: number })?.statusCode;
 
-            if (status === 401 || status === 403) {
-              return "Gemini authentication failed. Check your API key.";
-            }
+  if (status === 429) {
+    return "Too many questions right now. Try again shortly.";
+  }
 
-            return "Something went wrong. Please try again.";
+  if (status === 401 || status === 403) {
+    return "Gemini authentication failed. Check your API key.";
+  }
+
+  return "Something went wrong. Please try again.";
+},
           },
         });
       },
