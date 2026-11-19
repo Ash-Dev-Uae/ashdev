@@ -15,6 +15,7 @@ export type ServerRole = {
 };
 
 export const servers: ServerRole[] = [
+  { server: "eSports", position: "Staff Member", members: "1,500", tier: "staff" },
   { server: "Team Rangers", position: "Founder", members: "39", tier: "owner" },
   { server: "Toxicity", position: "Admin", members: "30", tier: "lead" },
   { server: "Galaxy Network", position: "Head Manager", members: "20–30", tier: "lead" },
@@ -25,7 +26,7 @@ export const servers: ServerRole[] = [
 
 export const stats = [
   { value: 70, suffix: "+", label: "Servers worked with" },
-  { value: 6, suffix: "", label: "Featured staff roles" },
+  { value: 7, suffix: "", label: "Featured staff roles" },
   { value: 2, suffix: "", label: "Discord servers owned" },
   { value: 130, suffix: "+", label: "Members managed" },
 ];

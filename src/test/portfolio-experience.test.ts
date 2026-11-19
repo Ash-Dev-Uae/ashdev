@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { additionalStaffExperience, stats } from "@/lib/portfolio-data";
+import { additionalStaffExperience, servers, stats } from "@/lib/portfolio-data";
 import { buildSystemPrompt } from "@/lib/ash-prompt";
 
 describe("Confirmed experience", () => {
@@ -12,5 +12,17 @@ describe("Confirmed experience", () => {
   );
   it("keeps two owned Discord servers", () => {
     expect(stats.find((stat) => stat.label === "Discord servers owned")?.value).toBe(2);
+  });
+  it("lists the 1,500-member eSports staff role and counts it as featured", () => {
+    expect(servers).toContainEqual({
+      server: "eSports",
+      position: "Staff Member",
+      members: "1,500",
+      tier: "staff",
+    });
+    expect(buildSystemPrompt()).toContain("- eSports: Staff Member (1,500 members)");
+    expect(stats.find((stat) => stat.label === "Featured staff roles")?.value).toBe(
+      servers.length,
+    );
   });
 });
