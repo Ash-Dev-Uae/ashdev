@@ -40,7 +40,17 @@ export const Route = createFileRoute("/api/chat")({
   name: "gemini",
           baseURL:
             "https://generativelanguage.googleapis.com/v1beta/openai/",
-          apiKey,
+                    apiKey,
+          fetch: async (input, init) => {
+            const response = await fetch(input, init);
+            console.error(
+              "Gemini diagnostic:",
+              input.toString(),
+              response.status,
+              await response.clone().text(),
+            );
+            return response;
+          },
         });
 
         const messages = parsed.data.messages as UIMessage[];
