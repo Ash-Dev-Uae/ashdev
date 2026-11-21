@@ -11,9 +11,7 @@ import {
   LayoutPanelTop,
   ClipboardCheck,
   Megaphone,
-  Users,
   Sparkles,
-  Pickaxe,
   ArrowUpRight,
   Code2,
   type LucideIcon,
@@ -106,7 +104,6 @@ function SectionTitle({
       <p className="font-mono text-xs tracking-[0.2em] text-primary">
         {kicker}
       </p>
-
       <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
         {title}
       </h2>
@@ -114,7 +111,6 @@ function SectionTitle({
   );
 }
 
-/* Animated terminal */
 const terminalScripts = [
   [
     "$ boot --portfolio",
@@ -124,7 +120,6 @@ const terminalScripts = [
     "> status: online",
     "> all systems operational_",
   ].join("\n") + "\n",
-
   [
     "$ scan --experience",
     "> discord_servers: 70+",
@@ -133,7 +128,6 @@ const terminalScripts = [
     "> community_building: enabled",
     "> scan complete_",
   ].join("\n") + "\n",
-
   [
     "$ minecraft --server-tools",
     "> initializing server systems...",
@@ -142,7 +136,6 @@ const terminalScripts = [
     "> permissions verified",
     "> process finished_",
   ].join("\n") + "\n",
-
   [
     "$ whoami",
     "> " + profile.name,
@@ -158,7 +151,7 @@ function TerminalWindow() {
   const [typed, setTyped] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  const script = terminalScripts[scriptIndex] ?? terminalScripts[0] ?? "";
+  const script = terminalScripts[scriptIndex] ?? "";
 
   useEffect(() => {
     const finishedTyping = typed === script;
@@ -203,11 +196,9 @@ function TerminalWindow() {
           <span className="size-2.5 rounded-full bg-amber-300" />
           <span className="size-2.5 rounded-full bg-violet-400" />
         </div>
-
         <span className="font-mono text-[10px] text-slate-500">
           ash@portfolio: ~
         </span>
-
         <Code2 className="size-4 text-violet-400" />
       </div>
 
@@ -215,7 +206,6 @@ function TerminalWindow() {
         <div className="mb-4 text-violet-400/50">
           // interactive terminal
         </div>
-
         <pre className="whitespace-pre-wrap break-words">
           {typed}
           <span className="animate-blink text-violet-300">█</span>
@@ -257,20 +247,14 @@ function Index() {
             <span className="grid size-8 place-items-center rounded-lg border border-violet-400/30 bg-violet-400/10">
               <Code2 className="size-4 text-violet-300" />
             </span>
-
             <span className="font-semibold text-white">
               {profile.name}
             </span>
-
             <span className="text-violet-400">.</span>
           </a>
 
           <div className="flex items-center gap-3 sm:hidden">
-            <Button
-              asChild
-              variant="ghost"
-              className="font-mono text-xs text-violet-300 hover:text-white"
-            >
+            <Button asChild variant="ghost" className="font-mono text-xs text-violet-300 hover:text-white">
               <a href="#arcade">Arcade</a>
             </Button>
           </div>
@@ -279,19 +263,15 @@ function Index() {
             <a href="#servers" className="transition hover:text-violet-300">
               Servers
             </a>
-
             <a href="#skills" className="transition hover:text-violet-300">
               Skills
             </a>
-
             <a href="#more" className="transition hover:text-violet-300">
               More
             </a>
-
             <a href="#arcade" className="transition hover:text-violet-300">
               Arcade
             </a>
-
             <Button
               variant="ghost"
               onClick={() => setChatOpen(true)}
@@ -322,17 +302,16 @@ function Index() {
         />
 
         <div className="absolute -left-40 top-1/4 size-[32rem] rounded-full bg-violet-600/10 blur-[140px]" />
-
         <div className="absolute right-0 top-1/4 size-[30rem] rounded-full bg-fuchsia-500/10 blur-[150px]" />
 
         <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 pt-8 lg:grid-cols-[1fr_1.08fr] lg:gap-16">
-          {/* Hero introduction */}
           <div className="animate-pop-in">
             <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/[0.07] px-4 py-2 font-mono text-[10px] tracking-[0.16em] text-violet-200 sm:text-xs">
               <span className="size-2 animate-pulse rounded-full bg-violet-400" />
               AVAILABLE FOR OPPORTUNITIES
             </div>
 
+            {/* Profile picture and name */}
             <div className="mb-5 flex items-center gap-4 sm:gap-5">
               <div className="relative size-[76px] shrink-0 overflow-hidden rounded-2xl border border-violet-300/40 shadow-[0_0_35px_rgba(139,92,246,0.25)] sm:size-24">
                 <img
@@ -347,7 +326,6 @@ function Index() {
                 <p className="mb-1 font-mono text-[10px] tracking-[0.2em] text-violet-300">
                   INTRODUCING
                 </p>
-
                 <h1 className="break-words text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
                   {profile.name}
                   <span className="text-violet-400">.</span>
@@ -379,7 +357,8 @@ function Index() {
                 </span>
               ))}
             </div>
-                        <div className="mt-9 flex flex-wrap gap-3">
+
+            <div className="mt-9 flex flex-wrap gap-3">
               <Button
                 asChild
                 className="rounded-xl bg-violet-500 px-6 text-white shadow-lg shadow-violet-500/20 transition hover:bg-violet-400"
@@ -400,10 +379,10 @@ function Index() {
             </div>
 
             <div className="mt-12 grid max-w-md grid-cols-3 gap-5 border-t border-violet-400/15 pt-7">
-              {stats.map((stat) => (
+              {stats.slice(0, 3).map((stat) => (
                 <div key={stat.label}>
                   <p className="text-2xl font-bold text-white sm:text-3xl">
-                    <Counter value={stat.value} />
+                    <Counter to={stat.value} suffix={stat.suffix} />
                   </p>
                   <p className="mt-1 font-mono text-[9px] tracking-wider text-slate-400 sm:text-[10px]">
                     {stat.label}
@@ -413,7 +392,6 @@ function Index() {
             </div>
           </div>
 
-          {/* Terminal */}
           <Reveal delay={150}>
             <TerminalWindow />
           </Reveal>
@@ -423,28 +401,19 @@ function Index() {
       {/* Ownership */}
       <section className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-20 backdrop-blur-md">
         <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle kicker="01 / OWNERSHIP" title="Communities I've Built" />
+          <SectionTitle
+            kicker="01 / OWNERSHIP"
+            title="Communities I've Built"
+          />
 
           <div className="grid gap-5 sm:grid-cols-2">
             {ownership.map((item, index) => (
-              <Reveal key={item.name} delay={index * 80}>
+              <Reveal key={item} delay={index * 80}>
                 <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="grid size-12 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
-                      <Crown className="size-5 text-violet-300" />
-                    </div>
-                    <span className="font-mono text-xs text-violet-300">
-                      {item.members}
-                    </span>
+                  <div className="mb-5 grid size-12 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
+                    <Crown className="size-5 text-violet-300" />
                   </div>
-
-                  <h3 className="text-xl font-bold text-white">
-                    {item.name}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                    {item.description}
-                  </p>
+                  <h3 className="text-lg font-bold text-white">{item}</h3>
                 </div>
               </Reveal>
             ))}
@@ -464,45 +433,39 @@ function Index() {
           />
 
           <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {servers.map((server, index) => (
-              <Reveal key={server.name} delay={index * 50}>
-                <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
-                  <div className="mb-5 flex items-center justify-between">
-                    <div className="grid size-11 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
-                      <Shield className="size-5 text-violet-300" />
+            {servers.map((server, index) => {
+              const TierIcon = tierStyle[server.tier].icon;
+
+              return (
+                <Reveal key={server.server} delay={index * 50}>
+                  <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
+                    <div className="mb-5 flex items-center justify-between">
+                      <div className="grid size-11 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
+                        <TierIcon className="size-5 text-violet-300" />
+                      </div>
+                      <span
+                        className={cn(
+                          "rounded-full px-3 py-1 font-mono text-[9px] tracking-wider",
+                          tierStyle[server.tier].cls,
+                        )}
+                      >
+                        {tierStyle[server.tier].label}
+                      </span>
                     </div>
 
-                    <span
-                      className={cn(
-                        "rounded-full px-3 py-1 font-mono text-[9px] tracking-wider",
-                        tierStyle[server.tier].cls,
-                      )}
-                    >
-                      {tierStyle[server.tier].label}
-                    </span>
+                    <h3 className="text-lg font-bold text-white">
+                      {server.server}
+                    </h3>
+                    <p className="mt-2 text-sm text-slate-300">
+                      {server.position}
+                    </p>
+                    <p className="mt-3 font-mono text-xs text-violet-300">
+                      {server.members} members
+                    </p>
                   </div>
-
-                  <h3 className="text-lg font-bold text-white">
-                    {server.name}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                    {server.description}
-                  </p>
-
-                  <div className="mt-5 flex flex-wrap gap-2">
-                    {server.tags?.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-violet-400/15 bg-violet-400/[0.06] px-2.5 py-1 font-mono text-[9px] text-violet-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </Reveal>
-            ))}
+                </Reveal>
+              );
+            })}
           </div>
 
           <div className="mt-16">
@@ -513,20 +476,12 @@ function Index() {
 
             <div className="grid gap-4 sm:grid-cols-2">
               {roles.map((role, index) => (
-                <Reveal key={role.title} delay={index * 60}>
-                  <div className="flex h-full gap-4 rounded-2xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/35">
+                <Reveal key={role} delay={index * 60}>
+                  <div className="flex h-full items-center gap-4 rounded-2xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/35">
                     <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
-                      <role.icon className="size-5 text-violet-300" />
+                      <Gavel className="size-5 text-violet-300" />
                     </div>
-
-                    <div>
-                      <h3 className="font-semibold text-white">
-                        {role.title}
-                      </h3>
-                      <p className="mt-1 text-sm leading-relaxed text-slate-400">
-                        {role.description}
-                      </p>
-                    </div>
+                    <h3 className="font-semibold text-white">{role}</h3>
                   </div>
                 </Reveal>
               ))}
@@ -534,8 +489,7 @@ function Index() {
           </div>
         </div>
       </section>
-
-      {/* Skills */}
+            {/* Skills */}
       <section
         id="skills"
         className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-24 backdrop-blur-md"
@@ -548,18 +502,18 @@ function Index() {
               const Icon = skillIcons[index % skillIcons.length];
 
               return (
-                <Reveal key={skill.name} delay={index * 50}>
-                  <div className="flex items-center gap-4 rounded-xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
+                <Reveal key={skill.title} delay={index * 50}>
+                  <div className="flex h-full items-center gap-4 rounded-xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
                     <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
                       <Icon className="size-5 text-violet-300" />
                     </div>
 
                     <div>
                       <h3 className="font-semibold text-white">
-                        {skill.name}
+                        {skill.title}
                       </h3>
-                      <p className="mt-1 text-xs text-slate-400">
-                        {skill.description}
+                      <p className="mt-1 text-xs leading-relaxed text-slate-400">
+                        {skill.text}
                       </p>
                     </div>
                   </div>
@@ -576,43 +530,42 @@ function Index() {
         className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md"
       >
         <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle kicker="05 / MORE ABOUT ME" title="Beyond the Roles" />
+          <SectionTitle
+            kicker="05 / MORE ABOUT ME"
+            title="Beyond the Roles"
+          />
 
           <div className="grid gap-5 sm:grid-cols-2">
             {extras.map((extra, index) => (
-              <Reveal key={extra.title} delay={index * 70}>
+              <Reveal key={extra} delay={index * 70}>
                 <div className="rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:border-violet-400/35">
                   <div className="mb-4 grid size-11 place-items-center rounded-xl bg-violet-400/10">
                     <Sparkles className="size-5 text-violet-300" />
                   </div>
-
-                  <h3 className="text-lg font-bold text-white">
-                    {extra.title}
-                  </h3>
-
-                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
-                    {extra.description}
-                  </p>
+                  <h3 className="text-lg font-bold text-white">{extra}</h3>
                 </div>
               </Reveal>
             ))}
           </div>
 
-          {additionalStaffExperience?.length > 0 && (
+          {additionalStaffExperience.length > 0 && (
             <div className="mt-14">
               <h3 className="mb-6 text-xl font-bold text-white">
-                Additional Experience
+                Additional Staff Experience
               </h3>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                {additionalStaffExperience.map((item) => (
+              <div className="grid gap-4 sm:grid-cols-3">
+                {additionalStaffExperience.map((members) => (
                   <div
-                    key={item.name}
+                    key={members}
                     className="rounded-xl border border-violet-400/15 bg-white/[0.035] p-5"
                   >
-                    <h4 className="font-semibold text-white">{item.name}</h4>
+                    <Users className="mb-3 size-5 text-violet-300" />
+                    <h4 className="text-2xl font-bold text-white">
+                      {members}+
+                    </h4>
                     <p className="mt-1 text-sm text-slate-400">
-                      {item.description}
+                      Member server experience
                     </p>
                   </div>
                 ))}
@@ -624,7 +577,6 @@ function Index() {
 
       {/* Arcade */}
       <section
-        id="arcade"
         className="relative border-y border-violet-400/10 bg-[#0b0815]/90 py-24 backdrop-blur-md"
       >
         <div className="mx-auto max-w-6xl px-6">
@@ -692,4 +644,4 @@ function Index() {
       </footer>
     </main>
   );
-                }
+              }
