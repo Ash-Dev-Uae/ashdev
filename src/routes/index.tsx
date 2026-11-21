@@ -554,11 +554,9 @@ function Index() {
       {/* Additional */}
       <section
         id="more"
-        className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24"
-      >
-        <Se      &gt; Building communities, managing teams, and creating better server experiences.
-            </p>
-
+        <p className="mt-4 max-w-xl text-muted-foreground leading-relaxed">
+  Building communities, managing teams, and creating better server experiences.
+</p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a
                 href="#servers"
