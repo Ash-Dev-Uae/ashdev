@@ -234,7 +234,15 @@ function Index() {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <main className="relative overflow-x-hidden bg-background text-foreground" style={{ backgroundImage: "url('/minecraft-bg.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
+    <main
+      className="relative overflow-x-hidden bg-background text-foreground"
+      style={{
+        backgroundImage: "url('/minecraft-bg.png')",
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundAttachment: "fixed",
+      }}
+    >
       <TapBurst />
       <CursorGlow />
       <AskAsh open={chatOpen} onOpenChange={setChatOpen} />
@@ -326,12 +334,13 @@ function Index() {
             </div>
 
             <div className="mb-5 flex items-center gap-4 sm:gap-5">
-              <div className="relative grid size-[76px] shrink-0 place-items-center overflow-hidden rounded-2xl border border-violet-300/40 bg-gradient-to-br from-violet-500/30 via-[#21143d] to-[#100b1e] shadow-[0_0_35px_rgba(139,92,246,0.25)] sm:size-24">
-                <div className="absolute inset-1 rounded-xl border border-violet-200/10" />
-
-                <Sparkles className="size-9 text-violet-200 sm:size-11" />
-
-                <span className="absolute bottom-2 right-2 size-2.5 rounded-full border-2 border-[#160e26] bg-emerald-400" />
+              <div className="relative size-[76px] shrink-0 overflow-hidden rounded-2xl border border-violet-300/40 shadow-[0_0_35px_rgba(139,92,246,0.25)] sm:size-24">
+                <img
+                  src="/ash-pfp.png"
+                  alt="Ash profile picture"
+                  className="size-full object-cover"
+                />
+                <div className="pointer-events-none absolute inset-1 rounded-xl border border-violet-200/10" />
               </div>
 
               <div className="min-w-0">
@@ -370,281 +379,317 @@ function Index() {
                 </span>
               ))}
             </div>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <a
-                href="#servers"
-                className="inline-flex items-center gap-2 rounded-xl border border-violet-300/40 bg-violet-500 px-6 py-3.5 font-mono text-xs font-semibold text-white shadow-[0_0_25px_rgba(139,92,246,0.22)] transition hover:-translate-y-1 hover:bg-violet-400"
+                        <div className="mt-9 flex flex-wrap gap-3">
+              <Button
+                asChild
+                className="rounded-xl bg-violet-500 px-6 text-white shadow-lg shadow-violet-500/20 transition hover:bg-violet-400"
               >
-                View Experience
-                <ArrowUpRight className="size-4" />
-              </a>
+                <a href="#servers">
+                  Explore My Experience
+                  <ArrowUpRight className="ml-2 size-4" />
+                </a>
+              </Button>
 
-              <a
-                href="#contact"
-                className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-6 py-3.5 font-mono text-xs text-slate-200 transition hover:-translate-y-1 hover:border-violet-300/40 hover:bg-violet-400/10"
+              <Button
+                variant="outline"
+                onClick={() => setChatOpen(true)}
+                className="rounded-xl border-violet-400/30 bg-violet-400/5 text-violet-200 hover:bg-violet-400/15 hover:text-white"
               >
-                Contact Me
-              </a>
+                Ask Ash
+              </Button>
             </div>
 
-            <div className="mt-10 flex items-center gap-3 text-xs text-slate-500">
-              <span className="h-px w-8 bg-violet-400/40" />
-              Scroll to explore
-              <span className="animate-bounce text-violet-300">↓</span>
+            <div className="mt-12 grid max-w-md grid-cols-3 gap-5 border-t border-violet-400/15 pt-7">
+              {stats.map((stat) => (
+                <div key={stat.label}>
+                  <p className="text-2xl font-bold text-white sm:text-3xl">
+                    <Counter value={stat.value} />
+                  </p>
+                  <p className="mt-1 font-mono text-[9px] tracking-wider text-slate-400 sm:text-[10px]">
+                    {stat.label}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Animated terminal */}
-          <TerminalWindow />
-        </div>
-      </section>
-            {/* Stats */}
-      <section
-        id="stats"
-        className="relative mx-auto -mt-8 max-w-6xl scroll-mt-24 px-5"
-      >
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {stats.map((s, i) => (
-            <Reveal key={s.label} delay={i * 100}>
-              <div className="pixel-card rounded-2xl p-5 text-center">
-                <div className="font-display text-3xl font-bold text-primary sm:text-4xl">
-                  <Counter to={s.value} suffix={s.suffix} />
-                </div>
-
-                <div className="mt-2 text-xs text-muted-foreground sm:text-sm">
-                  {s.label}
-                </div>
-              </div>
-            </Reveal>
-          ))}
+          {/* Terminal */}
+          <Reveal delay={150}>
+            <TerminalWindow />
+          </Reveal>
         </div>
       </section>
 
-      {/* Marquee */}
-      <div className="mt-20 overflow-hidden border-y border-violet-400/10 bg-card/60 py-4">
-        <div className="flex w-max animate-marquee gap-10 font-mono text-sm text-muted-foreground">
-          {[...servers, ...servers].map((s, i) => (
-            <span key={i} className="flex items-center gap-3">
-              <Pickaxe className="size-4 text-primary" />
-              {s.server}
-            </span>
-          ))}
+      {/* Ownership */}
+      <section className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-20 backdrop-blur-md">
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionTitle kicker="01 / OWNERSHIP" title="Communities I've Built" />
+
+          <div className="grid gap-5 sm:grid-cols-2">
+            {ownership.map((item, index) => (
+              <Reveal key={item.name} delay={index * 80}>
+                <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
+                  <div className="mb-5 flex items-center justify-between">
+                    <div className="grid size-12 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
+                      <Crown className="size-5 text-violet-300" />
+                    </div>
+                    <span className="font-mono text-xs text-violet-300">
+                      {item.members}
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-white">
+                    {item.name}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {item.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Servers */}
       <section
         id="servers"
-        className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24"
+        className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md"
       >
-        <SectionTitle
-          kicker="// STAFF EXPERIENCE"
-          title="Servers I've run & staffed"
-        />
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionTitle
+            kicker="02 / EXPERIENCE"
+            title="Where I've Worked"
+          />
 
-        <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3">
-          {servers.map((s, i) => {
-            const t = tierStyle[s.tier];
-            const Icon = t.icon;
-
-            return (
-              <Reveal key={s.server} delay={(i % 3) * 120}>
-                <article className="pixel-card group flex aspect-square flex-col justify-between rounded-2xl p-3 sm:p-6">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="grid size-10 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10 transition-transform duration-300 group-hover:rotate-6 sm:size-12">
-                      <Icon className="size-5 text-primary sm:size-6" />
+          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {servers.map((server, index) => (
+              <Reveal key={server.name} delay={index * 50}>
+                <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
+                  <div className="mb-5 flex items-center justify-between">
+                    <div className="grid size-11 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
+                      <Shield className="size-5 text-violet-300" />
                     </div>
 
                     <span
                       className={cn(
-                        "rounded-md px-2 py-1 font-mono text-[9px] sm:text-[10px]",
-                        t.cls,
+                        "rounded-full px-3 py-1 font-mono text-[9px] tracking-wider",
+                        tierStyle[server.tier].cls,
                       )}
                     >
-                      {t.label}
+                      {tierStyle[server.tier].label}
                     </span>
                   </div>
 
-                  <div>
-                    <h3 className="text-base font-bold leading-tight sm:text-2xl">
-                      {s.server}
-                    </h3>
+                  <h3 className="text-lg font-bold text-white">
+                    {server.name}
+                  </h3>
 
-                    <p className="mt-2 text-sm text-primary sm:text-base">
-                      {s.position}
-                    </p>
-                  </div>
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {server.description}
+                  </p>
 
-                  <div className="flex items-center gap-2 border-t border-dashed border-border pt-3 text-xs text-muted-foreground sm:pt-4 sm:text-sm">
-                    <Users className="size-4 shrink-0" />
-                    {s.members}
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {server.tags?.map((tag) => (
+                      <span
+                        key={tag}
+                        className="rounded-full border border-violet-400/15 bg-violet-400/[0.06] px-2.5 py-1 font-mono text-[9px] text-violet-200"
+                      >
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                </article>
+                </div>
               </Reveal>
-            );
-          })}
-        </div>
-
-        <Reveal delay={200}>
-          <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-3">
-            {additionalStaffExperience.map((members) => (
-              <article
-                key={members}
-                className="pixel-card flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-3 text-center"
-              >
-                <Users className="size-6 text-accent" />
-
-                <h3 className="font-bold">{members}-member server</h3>
-
-                <p className="text-sm text-muted-foreground">
-                  Staff experience
-                </p>
-              </article>
             ))}
           </div>
 
-          <p className="mt-10 text-center font-mono text-sm text-muted-foreground">
-            + worked with{" "}
-            <span className="font-bold text-primary">70+</span> servers in
-            total
-          </p>
-        </Reveal>
-      </section>
+          <div className="mt-16">
+            <SectionTitle
+              kicker="03 / STAFF ROLES"
+              title="My Roles & Responsibilities"
+            />
 
-      {/* Ownership and Roles */}
-      <section className="mx-auto grid max-w-6xl gap-6 px-5 lg:grid-cols-2">
-        <Reveal>
-          <div className="pixel-card h-full rounded-2xl p-7">
-            <div className="flex items-center gap-3">
-              <Crown className="size-6 text-gold" />
-              <h3 className="text-2xl font-bold">
-                Ownership & Management
-              </h3>
-            </div>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {roles.map((role, index) => (
+                <Reveal key={role.title} delay={index * 60}>
+                  <div className="flex h-full gap-4 rounded-2xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/35">
+                    <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
+                      <role.icon className="size-5 text-violet-300" />
+                    </div>
 
-            <ul className="mt-6 space-y-4">
-              {ownership.map((o) => (
-                <li key={o} className="flex items-start gap-3">
-                  <span className="mt-2 size-2 shrink-0 rounded-full bg-primary" />
-                  <span className="text-muted-foreground">{o}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </Reveal>
-
-        <Reveal delay={150}>
-          <div className="pixel-card h-full rounded-2xl p-7">
-            <div className="flex items-center gap-3">
-              <Shield className="size-6 text-accent" />
-              <h3 className="text-2xl font-bold">Staff Roles Held</h3>
-            </div>
-
-            <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
-              {roles.map((r, i) => (
-                <span
-                  key={r}
-                  className="animate-pop-in grid aspect-square place-items-center rounded-xl border border-violet-400/20 bg-violet-400/[0.07] p-2 text-center text-xs font-semibold text-violet-200 sm:text-sm"
-                  style={{ animationDelay: `${i * 90}ms` }}
-                >
-                  {r}
-                </span>
+                    <div>
+                      <h3 className="font-semibold text-white">
+                        {role.title}
+                      </h3>
+                      <p className="mt-1 text-sm leading-relaxed text-slate-400">
+                        {role.description}
+                      </p>
+                    </div>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
-        </Reveal>
+        </div>
       </section>
 
       {/* Skills */}
       <section
         id="skills"
-        className="mx-auto max-w-6xl scroll-mt-20 px-5 py-24"
+        className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-24 backdrop-blur-md"
       >
-        <SectionTitle
-          kicker="// STAFF SKILLS"
-          title="What I bring to a team"
-        />
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionTitle kicker="04 / SKILLS" title="What I Bring" />
 
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {skills.map((s, i) => {
-            const Icon = skillIcons[i] ?? Sparkles;
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {skills.map((skill, index) => {
+              const Icon = skillIcons[index % skillIcons.length];
 
-            return (
-              <Reveal key={s.title} delay={(i % 3) * 100}>
-                <div className="pixel-card group flex h-full gap-4 rounded-2xl p-5">
-                  <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10 transition-colors group-hover:bg-violet-400/20">
-                    <Icon className="size-5 text-primary" />
+              return (
+                <Reveal key={skill.name} delay={index * 50}>
+                  <div className="flex items-center gap-4 rounded-xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
+                    <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
+                      <Icon className="size-5 text-violet-300" />
+                    </div>
+
+                    <div>
+                      <h3 className="font-semibold text-white">
+                        {skill.name}
+                      </h3>
+                      <p className="mt-1 text-xs text-slate-400">
+                        {skill.description}
+                      </p>
+                    </div>
                   </div>
-
-                  <div>
-                    <h3 className="font-bold">{s.title}</h3>
-
-                    <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
-                      {s.text}
-                    </p>
-                  </div>
-                </div>
-              </Reveal>
-            );
-          })}
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </section>
 
-      {/* Additional */}
+      {/* More */}
       <section
         id="more"
-        className="mx-auto max-w-6xl scroll-mt-20 px-5 pb-24"
+        className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md"
       >
-        <SectionTitle
-          kicker="// ADDITIONAL"
-          title="Also experienced in"
-        />
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionTitle kicker="05 / MORE ABOUT ME" title="Beyond the Roles" />
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-6">
-          {extras.map((e, i) => (
-            <Reveal key={e} delay={(i % 3) * 80}>
-              <div className="pixel-card flex aspect-square flex-col items-center justify-center gap-3 rounded-2xl p-3 text-center text-sm">
-                <Sparkles className="size-6 text-violet-300" />
-                <span>{e}</span>
+          <div className="grid gap-5 sm:grid-cols-2">
+            {extras.map((extra, index) => (
+              <Reveal key={extra.title} delay={index * 70}>
+                <div className="rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:border-violet-400/35">
+                  <div className="mb-4 grid size-11 place-items-center rounded-xl bg-violet-400/10">
+                    <Sparkles className="size-5 text-violet-300" />
+                  </div>
+
+                  <h3 className="text-lg font-bold text-white">
+                    {extra.title}
+                  </h3>
+
+                  <p className="mt-2 text-sm leading-relaxed text-slate-400">
+                    {extra.description}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+
+          {additionalStaffExperience?.length > 0 && (
+            <div className="mt-14">
+              <h3 className="mb-6 text-xl font-bold text-white">
+                Additional Experience
+              </h3>
+
+              <div className="grid gap-4 sm:grid-cols-2">
+                {additionalStaffExperience.map((item) => (
+                  <div
+                    key={item.name}
+                    className="rounded-xl border border-violet-400/15 bg-white/[0.035] p-5"
+                  >
+                    <h4 className="font-semibold text-white">{item.name}</h4>
+                    <p className="mt-1 text-sm text-slate-400">
+                      {item.description}
+                    </p>
+                  </div>
+                ))}
               </div>
-            </Reveal>
-          ))}
+            </div>
+          )}
         </div>
       </section>
 
-      {/* Arcade Game */}
-      <Arcade />
+      {/* Arcade */}
+      <section
+        id="arcade"
+        className="relative border-y border-violet-400/10 bg-[#0b0815]/90 py-24 backdrop-blur-md"
+      >
+        <div className="mx-auto max-w-6xl px-6">
+          <SectionTitle
+            kicker="06 / INTERACTIVE"
+            title="Take a Break"
+          />
+
+          <p className="mb-8 max-w-xl text-sm leading-relaxed text-slate-400">
+            A little something to play with while you're here. Have fun!
+          </p>
+
+          <Arcade />
+        </div>
+      </section>
 
       {/* Contact */}
-      <section
-        id="contact"
-        className="scroll-mt-16 border-t border-violet-400/10 bg-[#0b0815]/70"
-      >
-        <Reveal className="mx-auto max-w-3xl px-5 py-20 text-center">
-          <p className="font-mono text-xs tracking-[0.2em] text-violet-300">
-            // READY TO JOIN
-          </p>
+      <section className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md">
+        <div className="mx-auto max-w-4xl px-6 text-center">
+          <Reveal>
+            <div className="mx-auto mb-6 grid size-14 place-items-center rounded-2xl border border-violet-400/25 bg-violet-400/10">
+              <Handshake className="size-7 text-violet-300" />
+            </div>
 
-          <h2 className="mt-4 text-3xl font-bold sm:text-4xl">
-            Need a reliable staff member for your{" "}
-            <span className="text-violet-400">server</span>?
-          </h2>
+            <p className="font-mono text-xs tracking-[0.2em] text-violet-300">
+              07 / LET'S CONNECT
+            </p>
 
-          <p className="mt-4 leading-relaxed text-muted-foreground">
-            Moderation, staff management, announcements and community growth —
-            let's talk on Discord.
-          </p>
+            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
+              Have a project in mind?
+            </h2>
 
-          <div className="mt-8">
-            <DiscordButton />
-          </div>
-        </Reveal>
+            <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-400 sm:text-base">
+              Whether you're building a community, growing a server, or looking
+              for someone to help manage your team, let's talk.
+            </p>
 
-        <footer className="border-t border-violet-400/10 py-6 text-center font-mono text-[10px] text-muted-foreground">
-          © {new Date().getFullYear()} {profile.name} · Built block by block
-        </footer>
+            <div className="mt-9 flex flex-wrap justify-center gap-3">
+              <DiscordButton />
+
+              <Button
+                onClick={() => setChatOpen(true)}
+                variant="outline"
+                className="rounded-xl border-violet-400/30 bg-violet-400/5 text-violet-200 hover:bg-violet-400/15 hover:text-white"
+              >
+                Ask Ash
+                <ArrowUpRight className="ml-2 size-4" />
+              </Button>
+            </div>
+          </Reveal>
+        </div>
       </section>
+
+      {/* Footer */}
+      <footer className="border-t border-violet-400/10 bg-[#080610] py-8">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-center sm:flex-row sm:text-left">
+          <p className="font-mono text-xs text-slate-500">
+            © {new Date().getFullYear()} {profile.name}. All rights reserved.
+          </p>
+
+          <p className="font-mono text-[10px] tracking-wider text-violet-400/70">
+            BUILT WITH PASSION
+          </p>
+        </div>
+      </footer>
     </main>
   );
-      }
+                }
