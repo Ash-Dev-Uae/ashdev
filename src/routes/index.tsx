@@ -11,6 +11,7 @@ import {
   LayoutPanelTop,
   ClipboardCheck,
   Megaphone,
+  Users,
   Sparkles,
   ArrowUpRight,
   Code2,
