@@ -234,7 +234,7 @@ function Index() {
   const [chatOpen, setChatOpen] = useState(false);
 
   return (
-    <main className="overflow-x-hidden bg-background text-foreground">
+    <main className="relative overflow-x-hidden bg-background text-foreground" style={{ backgroundImage: "url('/minecraft-bg.png')", backgroundSize: "cover", backgroundPosition: "center", backgroundAttachment: "fixed" }}>
       <TapBurst />
       <CursorGlow />
       <AskAsh open={chatOpen} onOpenChange={setChatOpen} />
