@@ -1,7 +1,9 @@
+
 /*
- * Tailwind v4 entry: config lives here, with no tailwind.config.js or PostCSS plugin.
- * Fonts are loaded via <link> in src/routes/__root.tsx.
+ * ASHDEV — Premium Portfolio Theme
+ * Tailwind CSS v4
  */
+
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -13,13 +15,14 @@
   --font-sans: "Rubik", ui-sans-serif, system-ui, sans-serif;
   --font-pixel: "Silkscreen", "Space Mono", monospace;
 
-  --radius-sm: calc(var(--radius) - 2px);
-  --radius-md: var(--radius);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 2px);
-  --radius-2xl: calc(var(--radius) + 4px);
-  --radius-3xl: calc(var(--radius) + 6px);
-  --radius-4xl: calc(var(--radius) + 8px);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
@@ -39,7 +42,6 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
-  --color-ring-offset-background: var(--background);
   --color-gold: var(--gold);
   --color-redstone: var(--redstone);
   --color-chart-1: var(--chart-1);
@@ -57,79 +59,143 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-/* Dark-only theme: night-sky navy, grass-block green, Discord blurple */
+/* ========================================
+   THEME
+   ======================================== */
+
 :root {
-  --radius: 0.25rem;
-  --background: oklch(0.15 0.03 265);
-  --foreground: oklch(0.95 0.01 250);
-  --card: oklch(0.2 0.035 265);
-  --card-foreground: oklch(0.95 0.01 250);
-  --popover: oklch(0.2 0.035 265);
-  --popover-foreground: oklch(0.95 0.01 250);
-  --primary: oklch(0.82 0.2 142);
-  --primary-foreground: oklch(0.18 0.05 145);
-  --secondary: oklch(0.26 0.04 265);
+  --radius: 0.75rem;
+
+  --background: oklch(0.13 0.025 265);
+  --foreground: oklch(0.96 0.01 250);
+
+  --card: oklch(0.19 0.03 265);
+  --card-foreground: oklch(0.96 0.01 250);
+
+  --popover: oklch(0.19 0.03 265);
+  --popover-foreground: oklch(0.96 0.01 250);
+
+  --primary: oklch(0.78 0.18 150);
+  --primary-foreground: oklch(0.16 0.04 150);
+
+  --secondary: oklch(0.24 0.035 265);
   --secondary-foreground: oklch(0.95 0.01 250);
-  --muted: oklch(0.24 0.035 265);
-  --muted-foreground: oklch(0.7 0.03 260);
-  --accent: oklch(0.6 0.2 275);
+
+  --muted: oklch(0.22 0.03 265);
+  --muted-foreground: oklch(0.72 0.025 260);
+
+  --accent: oklch(0.67 0.19 280);
   --accent-foreground: oklch(0.98 0.005 270);
+
   --gold: oklch(0.83 0.15 85);
   --redstone: oklch(0.62 0.22 27);
+
   --destructive: oklch(0.62 0.22 27);
   --destructive-foreground: oklch(0.98 0 0);
+
   --border: oklch(0.32 0.04 265);
-  --input: oklch(0.32 0.04 265);
-  --ring: oklch(0.82 0.2 142);
-  --chart-1: oklch(0.82 0.2 142);
-  --chart-2: oklch(0.6 0.2 275);
+  --input: oklch(0.29 0.035 265);
+  --ring: oklch(0.78 0.18 150);
+
+  --chart-1: oklch(0.78 0.18 150);
+  --chart-2: oklch(0.67 0.19 280);
   --chart-3: oklch(0.83 0.15 85);
   --chart-4: oklch(0.62 0.22 27);
   --chart-5: oklch(0.75 0.12 220);
-  --sidebar: oklch(0.2 0.035 265);
+
+  --sidebar: oklch(0.17 0.03 265);
   --sidebar-foreground: oklch(0.95 0.01 250);
-  --sidebar-primary: oklch(0.82 0.2 142);
-  --sidebar-primary-foreground: oklch(0.18 0.05 145);
-  --sidebar-accent: oklch(0.26 0.04 265);
+  --sidebar-primary: oklch(0.78 0.18 150);
+  --sidebar-primary-foreground: oklch(0.16 0.04 150);
+  --sidebar-accent: oklch(0.24 0.035 265);
   --sidebar-accent-foreground: oklch(0.95 0.01 250);
   --sidebar-border: oklch(0.32 0.04 265);
-  --sidebar-ring: oklch(0.82 0.2 142);
+  --sidebar-ring: oklch(0.78 0.18 150);
 
   --gradient-hero-fade: linear-gradient(
     180deg,
-    color-mix(in oklab, var(--background) 20%, transparent) 0%,
+    color-mix(in oklab, var(--background) 10%, transparent) 0%,
     color-mix(in oklab, var(--background) 55%, transparent) 55%,
     var(--background) 100%
   );
-  --gradient-text: linear-gradient(90deg, var(--primary), var(--accent));
+
+  --gradient-text: linear-gradient(
+    100deg,
+    #72ed9b 0%,
+    #8c9bff 50%,
+    #bd8aff 100%
+  );
+
   --shadow-pixel: 4px 4px 0 0 oklch(0.08 0.02 265);
   --shadow-pixel-primary: 4px 4px 0 0 var(--primary);
   --shadow-pixel-accent: 4px 4px 0 0 var(--accent);
-  --glow-primary: 0 0 24px color-mix(in oklab, var(--primary) 55%, transparent);
-  --glow-accent: 0 0 24px color-mix(in oklab, var(--accent) 55%, transparent);
+
+  --glow-primary: 0 0 24px color-mix(in oklab, var(--primary) 30%, transparent);
+  --glow-accent: 0 0 24px color-mix(in oklab, var(--accent) 30%, transparent);
 }
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
 
 @layer base {
   * {
     border-color: var(--color-border);
   }
+
   html {
     scroll-behavior: smooth;
+    scrollbar-color: var(--primary) var(--background);
   }
+
   body {
+    min-height: 100vh;
     background-color: var(--color-background);
+    background-image:
+      radial-gradient(
+        ellipse at 12% 0%,
+        rgba(80, 220, 130, 0.09),
+        transparent 38%
+      ),
+      radial-gradient(
+        ellipse at 90% 35%,
+        rgba(130, 85, 255, 0.10),
+        transparent 42%
+      );
+    background-attachment: fixed;
     color: var(--color-foreground);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
-  h1, h2, h3, h4 {
+
+  h1,
+  h2,
+  h3,
+  h4 {
     font-family: var(--font-display);
+    letter-spacing: -0.035em;
   }
+
+  button,
+  a {
+    -webkit-tap-highlight-color: transparent;
+  }
+
   ::selection {
     background: var(--primary);
     color: var(--primary-foreground);
   }
+
+  :focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 4px;
+  }
 }
+
+/* ========================================
+   CUSTOM UTILITIES
+   ======================================== */
 
 @utility text-gradient {
   background: var(--gradient-text);
@@ -142,53 +208,91 @@
   background: var(--gradient-hero-fade);
 }
 
-/* Blocky card: hard border + stepped offset shadow, lifts on hover */
+/* ========================================
+   PIXEL CARDS
+   ======================================== */
+
 @utility pixel-card {
-  background: var(--card);
-  border: 2px solid var(--border);
-  box-shadow: var(--shadow-pixel);
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--card) 94%, white 6%),
+    var(--card)
+  );
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.18);
   transition:
-    transform 0.2s steps(4),
-    box-shadow 0.2s steps(4),
-    border-color 0.2s;
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    border-color 0.25s ease;
+
   &:hover {
-    transform: translate(-3px, -3px);
-    box-shadow: 7px 7px 0 0 var(--primary);
+    transform: translateY(-5px);
     border-color: var(--primary);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.3),
+      var(--glow-primary);
   }
 }
 
 @utility pixel-card-accent {
   &:hover {
-    box-shadow: 7px 7px 0 0 var(--accent);
     border-color: var(--accent);
+    box-shadow:
+      0 12px 30px rgba(0, 0, 0, 0.3),
+      var(--glow-accent);
   }
 }
+
+/* ========================================
+   PIXEL BUTTONS
+   ======================================== */
 
 @utility pixel-btn {
   font-family: var(--font-pixel);
   border: 2px solid var(--foreground);
-  box-shadow: var(--shadow-pixel);
-  transition: transform 0.15s steps(3), box-shadow 0.15s steps(3);
+  border-radius: 8px;
+  box-shadow: 0 4px 0 rgba(0, 0, 0, 0.45);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background-color 0.2s ease;
+
   &:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0 0 oklch(0.08 0.02 265);
+    transform: translateY(-3px);
+    box-shadow:
+      0 7px 0 rgba(0, 0, 0, 0.4),
+      var(--glow-primary);
   }
+
   &:active {
-    transform: translate(2px, 2px);
-    box-shadow: 0 0 0 0 transparent;
+    transform: translateY(2px);
+    box-shadow: none;
   }
 }
 
-/* Framed intro panel in the hero */
+/* ========================================
+   HERO PANEL
+   ======================================== */
+
 @utility hero-box {
-  background: color-mix(in oklab, var(--card) 82%, transparent);
-  backdrop-filter: blur(6px);
-  border: 3px solid var(--primary);
+  background: linear-gradient(
+    135deg,
+    rgba(25, 35, 40, 0.92),
+    rgba(20, 20, 45, 0.92)
+  );
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in oklab, var(--primary) 65%, transparent);
+  border-radius: 16px;
   box-shadow:
-    8px 8px 0 0 var(--accent),
-    var(--glow-primary);
+    0 0 35px rgba(80, 220, 130, 0.08),
+    8px 8px 0 rgba(110, 75, 200, 0.5);
 }
+
+/* ========================================
+   GLOW & SCANLINES
+   ======================================== */
 
 @utility glow-primary {
   box-shadow: var(--glow-primary);
@@ -197,94 +301,165 @@
 @utility scanlines {
   background-image: repeating-linear-gradient(
     0deg,
-    color-mix(in oklab, var(--foreground) 4%, transparent) 0px,
-    color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+    color-mix(in oklab, var(--foreground) 3%, transparent) 0px,
+    color-mix(in oklab, var(--foreground) 3%, transparent) 1px,
     transparent 1px,
     transparent 4px
   );
 }
 
-/* Scroll reveal */
+/* ========================================
+   SCROLL REVEAL
+   ======================================== */
+
 .reveal {
   opacity: 0;
   transform: translateY(28px);
   transition:
-    opacity 0.7s cubic-bezier(0.2, 0.8, 0.2, 1),
-    transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+
 .reveal.is-visible {
   opacity: 1;
   transform: none;
 }
 
+/* ========================================
+   ANIMATIONS
+   ======================================== */
+
 @keyframes float-block {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50% { transform: translateY(-18px) rotate(8deg); }
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(8deg);
+  }
 }
+
 @keyframes blink {
-  50% { opacity: 0; }
+  50% {
+    opacity: 0;
+  }
 }
+
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 60%, transparent); }
-  50% { box-shadow: 0 0 0 8px transparent; }
+  0%, 100% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 45%, transparent);
+  }
+  50% {
+    box-shadow: 0 0 0 8px transparent;
+  }
 }
+
 @keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(6px); }
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(6px);
+  }
 }
+
 @keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
 }
+
 @keyframes pop-in {
-  0% { opacity: 0; transform: scale(0.6); }
-  70% { transform: scale(1.08); }
-  100% { opacity: 1; transform: scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  70% {
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
 @utility animate-float-block {
   animation: float-block 6s ease-in-out infinite;
 }
+
 @utility animate-blink {
   animation: blink 1s steps(1) infinite;
 }
+
 @utility animate-pulse-glow {
   animation: pulse-glow 2s ease-out infinite;
 }
+
 @utility animate-bob {
   animation: bob 1.6s ease-in-out infinite;
 }
+
 @utility animate-marquee {
   animation: marquee 28s linear infinite;
 }
+
 @utility animate-pop-in {
   animation: pop-in 0.6s cubic-bezier(0.2, 0.8, 0.2, 1) both;
 }
 
-/* Tap burst (see TapBurst.tsx) */
+/* ========================================
+   TAP BURST EFFECT
+   ======================================== */
+
 @keyframes tap-particle {
-  0% { opacity: 1; transform: translate(-50%, -50%) translate(0, 0) scale(1); }
-  70% { opacity: 1; }
-  100% { opacity: 0; transform: translate(-50%, -50%) translate(var(--dx), calc(var(--dy) + 24px)) scale(0.4); }
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) translate(0, 0) scale(1);
+  }
+  70% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) translate(
+      var(--dx),
+      calc(var(--dy) + 24px)
+    ) scale(0.4);
+  }
 }
+
 @keyframes tap-ring {
-  0% { opacity: 0.9; transform: translate(-50%, -50%) scale(0.2); }
-  100% { opacity: 0; transform: translate(-50%, -50%) scale(1); }
+  0% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1);
+  }
 }
+
 .tap-particle {
   position: absolute;
   box-shadow: 1px 1px 0 0 oklch(0.08 0.02 265);
   animation: tap-particle 0.6s cubic-bezier(0.2, 0.7, 0.4, 1) forwards;
 }
+
 .tap-ring {
   position: absolute;
   width: 56px;
   height: 56px;
-  border: 3px solid var(--primary);
+  border: 2px solid var(--primary);
+  border-radius: 50%;
   animation: tap-ring 0.45s steps(5) forwards;
 }
 
-/* Glowing yellow circle that follows cursor / finger (see CursorGlow.tsx) */
+/* ========================================
+   CURSOR GLOW
+   ======================================== */
+
 .cursor-glow {
   position: fixed;
   left: 0;
@@ -296,8 +471,8 @@
   pointer-events: none;
   background: radial-gradient(
     circle,
-    color-mix(in oklab, var(--gold) 45%, transparent) 0%,
-    color-mix(in oklab, var(--gold) 15%, transparent) 35%,
+    color-mix(in oklab, var(--gold) 35%, transparent) 0%,
+    color-mix(in oklab, var(--gold) 12%, transparent) 35%,
     transparent 70%
   );
   mix-blend-mode: screen;
@@ -307,39 +482,113 @@
   display: grid;
   place-items: center;
 }
+
 .cursor-glow.is-active {
   opacity: 1;
 }
+
 .cursor-glow-core {
   width: 22px;
   height: 22px;
   border-radius: 9999px;
   border: 2px solid var(--gold);
-  background: color-mix(in oklab, var(--gold) 35%, transparent);
+  background: color-mix(in oklab, var(--gold) 30%, transparent);
   box-shadow:
     0 0 12px var(--gold),
-    0 0 28px color-mix(in oklab, var(--gold) 70%, transparent);
+    0 0 28px color-mix(in oklab, var(--gold) 60%, transparent);
   animation: glow-breathe 1.8s ease-in-out infinite;
 }
+
 @keyframes glow-breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.15); }
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
 }
 
-/* Touch screens have no hover: give cards and buttons a press reaction */
+/* ========================================
+   SCROLLBAR
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--background);
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in oklab, var(--primary) 65%, var(--accent));
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary);
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+@media (max-width: 768px) {
+  .hero-box {
+    border-width: 2px;
+    border-radius: 12px;
+    box-shadow: 5px 5px 0 rgba(110, 75, 200, 0.5);
+  }
+
+  section {
+    scroll-margin-top: 80px;
+  }
+
+  .pixel-card:hover {
+    transform: none;
+  }
+
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* Touch screens */
 @media (hover: none) {
   .pixel-card:active {
-    transform: translate(-3px, -3px) scale(0.98);
-    box-shadow: 7px 7px 0 0 var(--primary);
+    transform: scale(0.98);
     border-color: var(--primary);
+    box-shadow: var(--glow-primary);
   }
+
   .pixel-card-accent:active {
-    box-shadow: 7px 7px 0 0 var(--accent);
     border-color: var(--accent);
+    box-shadow: var(--glow-accent);
+  }
+
+  .pixel-btn:active {
+    transform: scale(0.97);
   }
 }
 
+/* Reduced motion accessibility */
 @media (prefers-reduced-motion: reduce) {
-  .reveal { opacity: 1; transform: none; transition: none; }
-  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  html {
+    scroll-behavior: auto;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
