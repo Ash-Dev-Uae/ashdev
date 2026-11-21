@@ -35,3 +35,4 @@ use the editor.
 
 - AI chat: server route `src/routes/api/chat.ts` streams via AI Gateway; system prompt built from portfolio data in `src/lib/ash-prompt.ts` so answers stay in sync with site content. Chats saved in browser localStorage (no backend).
 - AshBot is a closed-by-default floating panel; never autofocus its composer so opening the portfolio cannot scroll visitors away from the introduction.
+- Arcade rules live in a pure reducer; the game uses an absolute deadline and a cleaned-up interval so throttled tabs and restarts cannot extend a round.

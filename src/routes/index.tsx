@@ -21,6 +21,7 @@ import { DiscordButton } from "@/components/portfolio/DiscordButton";
 import { TapBurst } from "@/components/portfolio/TapBurst";
 import { CursorGlow } from "@/components/portfolio/CursorGlow";
 import { AskAsh } from "@/components/portfolio/AskAsh";
+import { Arcade } from "@/components/portfolio/Arcade";
 import {
   profile,
   servers,
@@ -128,7 +129,7 @@ function TerminalWindow() {
   const [typed, setTyped] = useState("");
   const [deleting, setDeleting] = useState(false);
 
-  const script = terminalScripts[scriptIndex] ?? terminalScripts[0];
+  const script = terminalScripts[scriptIndex] ?? terminalScripts[0] ?? "";
 
   useEffect(() => {
     const finishedTyping = typed === script;
@@ -207,10 +208,17 @@ function Index() {
             <span className="text-white">{profile.name}</span>
           </a>
 
-          <div className="hidden items-center gap-8 font-mono text-[10px] text-slate-400 sm:flex">
+          <Button asChild variant="ghost" className="font-mono text-xs text-arcade hover:text-arcade sm:hidden">
+            <a href="#arcade">Arcade</a>
+          </Button>
+
+          <div className="hidden items-center gap-4 font-mono text-[10px] text-slate-400 sm:flex lg:gap-8">
             <a href="#servers" className="hover:text-emerald-400">01_SERVERS</a>
             <a href="#skills" className="hover:text-emerald-400">02_SKILLS</a>
             <a href="#more" className="hover:text-emerald-400">03_MORE</a>
+            <Button asChild variant="ghost" className="h-auto px-0 font-mono text-[10px] text-arcade hover:bg-transparent hover:text-arcade">
+              <a href="#arcade">04_ARCADE</a>
+            </Button>
 
             <Button
               variant="ghost"
@@ -483,6 +491,8 @@ function Index() {
           ))}
         </div>
       </section>
+
+      <Arcade />
 
       {/* CTA */}
       <section id="contact" className="scroll-mt-16 border-t-2 border-border bg-card">

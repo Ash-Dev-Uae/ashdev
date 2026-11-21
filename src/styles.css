@@ -42,6 +42,9 @@
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
+  --color-arcade: var(--arcade);
+  --color-arcade-foreground: var(--arcade-foreground);
+  --color-arcade-surface: var(--arcade-surface);
   --color-gold: var(--gold);
   --color-redstone: var(--redstone);
   --color-chart-1: var(--chart-1);
@@ -132,7 +135,46 @@
 
   --glow-primary: 0 0 24px color-mix(in oklab, var(--primary) 30%, transparent);
   --glow-accent: 0 0 24px color-mix(in oklab, var(--accent) 30%, transparent);
+  --arcade: oklch(0.76 0.18 300);
+  --arcade-foreground: oklch(0.16 0.035 300);
+  --arcade-surface: oklch(0.14 0.035 295);
+  --arcade-orb: radial-gradient(circle at 35% 25%, var(--foreground), var(--arcade) 38%, var(--accent) 80%);
+  --arcade-glow: 0 0 20px color-mix(in oklab, var(--arcade) 65%, transparent), 0 0 55px color-mix(in oklab, var(--arcade) 30%, transparent);
 }
+
+.arcade-field {
+  background-color: var(--arcade-surface);
+  background-image: linear-gradient(color-mix(in oklab, var(--arcade) 8%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--arcade) 8%, transparent) 1px, transparent 1px);
+  background-size: 32px 32px;
+  isolation: isolate;
+}
+
+.arcade-orb {
+  --orb-size: 64px;
+  position: absolute;
+  width: var(--orb-size);
+  height: var(--orb-size);
+  left: calc(12px + var(--glitch-x) * (100% - var(--orb-size) - 24px));
+  top: calc(12px + var(--glitch-y) * (100% - var(--orb-size) - 24px));
+  background: var(--arcade-orb);
+  box-shadow: var(--arcade-glow);
+  border: 2px solid var(--arcade);
+  border-radius: 50%;
+  touch-action: manipulation;
+  transition: filter 120ms;
+}
+
+.arcade-orb:hover { filter: brightness(1.12); background: var(--arcade-orb); }
+.arcade-orb:focus-visible { outline: 3px solid var(--foreground); outline-offset: 5px; }
+.arcade-orb::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border: 1px dashed var(--arcade);
+  border-radius: 50%;
+  animation: arcade-orbit 9s linear infinite;
+}
+@keyframes arcade-orbit { to { transform: rotate(360deg); } }
 
 /* ========================================
    BASE STYLES

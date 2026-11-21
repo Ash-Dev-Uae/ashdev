@@ -191,7 +191,29 @@ function ChatWindow({
   const taRef = useRef<HTMLTextAreaElement>(null);
 
   const transport = useMemo(
-    () => new DefaultChatTransport({ api: "/api/chat", body: () => ({ focus: focusRef.current }) }),
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        body: () => ({ focus: focusRef.current }),
+        fetch: async (input, init) => {
+          const response = await fetch(input, init);
+          if (!response.ok && response.headers.get("content-type")?.includes("application/json")) {
+            const payload: unknown = await response
+              .clone()
+              .json()
+              .catch(() => null);
+            if (
+              payload &&
+              typeof payload === "object" &&
+              "error" in payload &&
+              typeof payload.error === "string"
+            ) {
+              throw new Error(payload.error);
+            }
+          }
+          return response;
+        },
+      }),
     [],
   );
   const { messages, sendMessage, status, stop, error } = useChat({
@@ -315,7 +337,9 @@ function ChatWindow({
             </div>
           )}
           {error && (
-            <p className="text-sm text-destructive">{error.message || "Something went wrong."}</p>
+            <p role="alert" className="text-sm text-destructive">
+              {error.message || "Something went wrong."}
+            </p>
           )}
         </ConversationContent>
         <ConversationScrollButton />
