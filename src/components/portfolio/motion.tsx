@@ -7,17 +7,31 @@ function useInView<T extends Element>(threshold = 0.15) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    const show = () => {
+      setVisible(true);
+      io.disconnect();
+      window.removeEventListener("scroll", checkInView);
+    };
+    const checkInView = () => {
+      const rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.94 && rect.bottom > 0) show();
+    };
     const io = new IntersectionObserver(
       ([entry]) => {
-        if (entry?.isIntersecting) {
-          setVisible(true);
-          io.disconnect();
-        }
+        if (entry?.isIntersecting) show();
       },
       { threshold },
     );
+
     io.observe(el);
-    return () => io.disconnect();
+    window.addEventListener("scroll", checkInView, { passive: true });
+    checkInView();
+
+    return () => {
+      io.disconnect();
+      window.removeEventListener("scroll", checkInView);
+    };
   }, [threshold]);
   return { ref, visible };
 }
@@ -48,6 +62,10 @@ export function Counter({ to, suffix = "" }: { to: number; suffix?: string }) {
   const [n, setN] = useState(0);
   useEffect(() => {
     if (!visible) return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setN(to);
+      return;
+    }
     const duration = 1400;
     const start = performance.now();
     let raf = 0;

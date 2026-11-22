@@ -3,7 +3,13 @@ import { Check, MessageCircle } from "lucide-react";
 import { profile } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
 
-export function DiscordButton({ className, label = "MESSAGE ME ON DISCORD" }: { className?: string; label?: string }) {
+export function DiscordButton({
+  className,
+  label = "MESSAGE ME ON DISCORD",
+}: {
+  className?: string;
+  label?: string;
+}) {
   const [copied, setCopied] = useState(false);
   const profileUrl = profile.discordId ? `https://discord.com/users/${profile.discordId}` : null;
 
@@ -18,14 +24,20 @@ export function DiscordButton({ className, label = "MESSAGE ME ON DISCORD" }: { 
   };
 
   const cls = cn(
-    "pixel-btn inline-flex items-center gap-2 bg-accent px-5 py-3 text-xs text-accent-foreground",
+    "inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border bg-secondary px-6 text-sm font-semibold text-secondary-foreground transition duration-300 hover:-translate-y-0.5 hover:border-primary/50 hover:bg-secondary/80 focus-visible:ring-2 focus-visible:ring-ring",
     className,
   );
 
   return (
     <div className="inline-flex flex-col items-center gap-2">
       {profileUrl ? (
-        <a href={profileUrl} target="_blank" rel="noopener noreferrer" onClick={copy} className={cls}>
+        <a
+          href={profileUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={copy}
+          className={cls}
+        >
           <MessageCircle className="size-4" /> {label}
         </a>
       ) : (
@@ -34,7 +46,7 @@ export function DiscordButton({ className, label = "MESSAGE ME ON DISCORD" }: { 
           {copied ? "USERNAME COPIED!" : label}
         </button>
       )}
-      <span className="font-pixel text-[10px] text-muted-foreground" aria-live="polite">
+      <span className="font-mono text-[10px] text-muted-foreground" aria-live="polite">
         {copied ? "Paste it in Discord → Add Friend" : `@${profile.discordUsername}`}
       </span>
     </div>

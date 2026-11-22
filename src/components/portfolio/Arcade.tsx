@@ -34,13 +34,13 @@ export function Arcade() {
     <section
       id="arcade"
       aria-labelledby="arcade-title"
-      className="scroll-mt-24 border-t border-arcade/20 py-20 sm:py-24"
+      className="scroll-mt-20 border-y border-border bg-background py-20 sm:py-24"
     >
-      <div className="mx-auto max-w-6xl px-5">
+      <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
           <div>
-            <p className="mb-3 flex items-center gap-2 font-pixel text-xs text-arcade">
-              <Gamepad2 className="size-4" /> // SIDE QUEST
+            <p className="mb-3 flex items-center gap-2 font-mono text-[10px] tracking-[0.16em] text-arcade uppercase">
+              <Gamepad2 className="size-4" /> 05 / Interactive
             </p>
             <h2 id="arcade-title" className="text-3xl font-bold tracking-normal sm:text-4xl">
               Ash’s Arcade
@@ -51,7 +51,7 @@ export function Arcade() {
           </span>
         </div>
 
-        <div className="overflow-hidden rounded-lg border border-arcade/30 bg-arcade-surface">
+        <div className="overflow-hidden rounded-2xl border border-arcade/25 bg-arcade-surface shadow-2xl">
           <div className="flex flex-wrap items-center justify-between gap-5 border-b border-arcade/20 px-5 py-5 sm:px-7">
             <div>
               <h3 className="flex items-center gap-2 text-lg font-bold tracking-normal sm:text-xl">
@@ -133,7 +133,7 @@ export function Arcade() {
                 <Button
                   type="button"
                   onClick={start}
-                  className="h-12 gap-2 rounded-md bg-arcade px-6 font-mono text-arcade-foreground hover:bg-arcade/90 focus-visible:ring-arcade"
+                  className="h-12 gap-2 rounded-full bg-arcade px-7 font-mono text-xs font-bold text-arcade-foreground hover:bg-arcade/90 focus-visible:ring-arcade"
                 >
                   {game.status === "finished" ? (
                     <RotateCcw className="size-4" />
@@ -159,7 +159,7 @@ export function Arcade() {
                 type="button"
                 variant="outline"
                 onClick={start}
-                className="h-10 gap-2 border-arcade/30 bg-transparent font-mono text-xs text-arcade hover:bg-arcade/10 hover:text-arcade"
+                className="h-10 gap-2 rounded-full border-arcade/30 bg-transparent font-mono text-xs text-arcade hover:bg-arcade/10 hover:text-arcade"
               >
                 <RotateCcw className="size-3.5" /> Restart
               </Button>

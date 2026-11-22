@@ -70,3 +70,31 @@ export const extras = [
   "Staff recruitment & coordination",
   "Discord tickets & punishments",
 ];
+
+export const projects = [
+  {
+    name: "Team Rangers",
+    category: "Community leadership",
+    description: "A Discord server founded by Ash, with hands-on community and staff coordination.",
+    meta: "Founder · 39 members",
+    href: "#experience",
+    action: "View experience",
+  },
+  {
+    name: "BlameGens",
+    category: "Server ownership",
+    description: "A server community owned by Ash, part of his practical management experience.",
+    meta: "Owner · 10 members",
+    href: "#experience",
+    action: "View experience",
+  },
+  {
+    name: "AshDev Portfolio",
+    category: "Interactive web experience",
+    description:
+      "This portfolio, including a live terminal, visitor Q&A, and the Catch the Glitch mini-game.",
+    meta: "Terminal · AshBot · Arcade",
+    href: "#arcade",
+    action: "Try the arcade",
+  },
+];

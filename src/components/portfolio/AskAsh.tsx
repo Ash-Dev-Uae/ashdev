@@ -99,13 +99,20 @@ export function AskAsh({
         aria-label="AshBot chat"
         hidden={!open}
         className={cn(
-          "mb-3 h-[min(640px,calc(100dvh-7rem))] w-[420px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden border-2 border-primary bg-card shadow-[var(--shadow-pixel)]",
+          "mb-3 h-[min(640px,calc(100dvh-7rem))] w-[420px] max-w-[calc(100vw-2rem)] flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-pixel)]",
           open && "flex",
         )}
       >
-        <header className="flex shrink-0 items-center gap-2 border-b-2 border-border p-3">
-          <img src={botImg} alt="" className="size-8 [image-rendering:pixelated]" />
-          <h2 className="flex-1 font-pixel text-sm">ASHBOT</h2>
+        <header className="flex shrink-0 items-center gap-3 border-b border-border bg-secondary/35 p-3">
+          <img
+            src={botImg}
+            alt=""
+            className="size-9 rounded-lg border border-primary/25 [image-rendering:pixelated]"
+          />
+          <div className="flex-1">
+            <h2 className="text-sm font-bold">AshBot</h2>
+            <p className="text-[10px] text-muted-foreground">Ask about my experience</p>
+          </div>
           <Button
             variant="ghost"
             size="icon"
@@ -116,7 +123,7 @@ export function AskAsh({
             <X />
           </Button>
         </header>
-        <div className="flex shrink-0 items-center gap-2 border-b-2 border-border px-3 py-2">
+        <div className="flex shrink-0 items-center gap-2 border-b border-border px-3 py-2">
           <select
             aria-label="Saved chats"
             value={activeId}
@@ -169,9 +176,10 @@ export function AskAsh({
         aria-expanded={open}
         aria-controls="ashbot-panel"
         aria-label={open ? "Hide AshBot" : "Open AshBot"}
-        className="ml-auto flex h-14 gap-3 rounded-sm border-2 border-primary px-4 font-pixel text-xs shadow-[var(--shadow-pixel)]"
+        className="ml-auto flex h-13 gap-2 rounded-full border border-primary/35 bg-primary px-5 text-xs font-bold text-primary-foreground shadow-[var(--shadow-pixel-primary)] hover:bg-primary/90"
       >
-        <img src={botImg} alt="" className="size-9 [image-rendering:pixelated]" /> ASK ASHBOT
+        <img src={botImg} alt="" className="size-8 rounded-md [image-rendering:pixelated]" /> Ask
+        AshBot
       </Button>
     </div>
   );
@@ -250,8 +258,8 @@ function ChatWindow({
 
   return (
     <div className="flex min-h-0 flex-1 flex-col overflow-hidden">
-      <div className="flex flex-wrap items-center gap-2 border-b-2 border-border p-3">
-        <label htmlFor="focus" className="font-pixel text-[10px] text-muted-foreground">
+      <div className="flex flex-wrap items-center gap-2 border-b border-border p-3">
+        <label htmlFor="focus" className="font-mono text-[9px] tracking-wide text-muted-foreground">
           SERVER / ROLE
         </label>
         <input
@@ -262,7 +270,7 @@ function ChatWindow({
           onChange={(e) => setFocus(e.target.value)}
           onBlur={() => onChange({ focus })}
           placeholder="e.g. Toxicity or Admin (optional)"
-          className="min-w-0 flex-1 rounded-sm border-2 border-border bg-background px-2 py-1 text-sm outline-none focus:border-primary"
+          className="min-w-0 flex-1 rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
         />
         <datalist id="ash-servers">
           {servers.map((s) => (
@@ -286,7 +294,7 @@ function ChatWindow({
                     variant="outline"
                     type="button"
                     onClick={() => ask(s)}
-                    className="h-auto whitespace-normal rounded-sm border-2 px-2 py-1 text-xs hover:border-primary"
+                    className="h-auto whitespace-normal rounded-lg px-3 py-2 text-xs hover:border-primary"
                   >
                     {s}
                   </Button>
@@ -344,7 +352,7 @@ function ChatWindow({
         </ConversationContent>
         <ConversationScrollButton />
       </Conversation>
-      <div className="border-t-2 border-border p-3">
+      <div className="border-t border-border bg-secondary/20 p-3">
         <PromptInput onSubmit={(msg) => ask(msg.text ?? "")}>
           <PromptInputTextarea
             ref={taRef}

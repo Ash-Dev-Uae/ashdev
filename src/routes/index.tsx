@@ -1,57 +1,68 @@
 import { createFileRoute } from "@tanstack/react-router";
 import {
-  Crown,
-  Shield,
-  Gavel,
-  Flag,
-  Bug,
-  MessageSquareOff,
-  Handshake,
-  UserX,
-  LayoutPanelTop,
-  ClipboardCheck,
-  Megaphone,
-  Users,
-  Sparkles,
+  ArrowRight,
   ArrowUpRight,
+  Blocks,
+  Bot,
+  Box,
+  Bug,
+  Check,
+  ClipboardCheck,
   Code2,
+  Crown,
+  Flag,
+  Gavel,
+  Hammer,
+  Handshake,
+  LayoutPanelTop,
+  Menu,
+  MessageCircle,
+  MessageSquareOff,
+  MessagesSquare,
+  Shield,
+  Sparkles,
+  UserX,
+  Users,
+  X,
   type LucideIcon,
 } from "lucide-react";
-import { Reveal, Counter } from "@/components/portfolio/motion";
-import { DiscordButton } from "@/components/portfolio/DiscordButton";
-import { TapBurst } from "@/components/portfolio/TapBurst";
-import { CursorGlow } from "@/components/portfolio/CursorGlow";
-import { AskAsh } from "@/components/portfolio/AskAsh";
+import { useEffect, useState } from "react";
+
 import { Arcade } from "@/components/portfolio/Arcade";
+import { AskAsh } from "@/components/portfolio/AskAsh";
+import { CursorGlow } from "@/components/portfolio/CursorGlow";
+import { DiscordButton } from "@/components/portfolio/DiscordButton";
+import { Counter, Reveal } from "@/components/portfolio/motion";
+import { TapBurst } from "@/components/portfolio/TapBurst";
+import { Button } from "@/components/ui/button";
 import {
-  profile,
-  servers,
-  stats,
-  ownership,
-  roles,
-  skills,
-  extras,
   additionalStaffExperience,
+  extras,
+  ownership,
+  profile,
+  projects,
+  roles,
+  servers,
+  skills,
+  stats,
   type ServerRole,
 } from "@/lib/portfolio-data";
 import { cn } from "@/lib/utils";
-import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: `${profile.name} — Discord & Minecraft Staff Portfolio` },
+      { title: "Ash — Community Manager & Minecraft Staff" },
       {
         name: "description",
         content:
-          "Community management, staff leadership, moderation and Minecraft server experience across 70+ communities.",
+          "Ash's portfolio: Discord and Minecraft staff experience, community leadership, moderation skills, owned servers, and interactive projects.",
       },
-      { property: "og:title", content: `${profile.name} — AshDev Portfolio` },
+      { property: "og:title", content: "Ash — Community Manager & Minecraft Staff" },
       {
         property: "og:description",
         content:
-          "Building communities, managing teams and creating better server experiences.",
+          "Community leadership, hands-on moderation, Minecraft server experience, and interactive projects by Ash.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -69,45 +80,66 @@ const skillIcons: LucideIcon[] = [
   UserX,
   LayoutPanelTop,
   ClipboardCheck,
-  Megaphone,
+  MessagesSquare,
 ];
 
-const tierStyle: Record<
+const tierDetails: Record<
   ServerRole["tier"],
-  { label: string; cls: string; icon: LucideIcon }
+  { label: string; icon: LucideIcon; className: string }
 > = {
   owner: {
-    label: "OWNER",
-    cls: "bg-gold text-background",
+    label: "Owner",
     icon: Crown,
+    className: "border-primary/35 bg-primary/10 text-primary",
   },
   lead: {
-    label: "LEAD",
-    cls: "bg-primary text-primary-foreground",
+    label: "Leadership",
     icon: Shield,
+    className: "border-foreground/15 bg-secondary text-foreground",
   },
   staff: {
-    label: "STAFF",
-    cls: "bg-accent text-accent-foreground",
+    label: "Staff",
     icon: Gavel,
+    className: "border-border bg-muted text-muted-foreground",
   },
 };
 
-function SectionTitle({
-  kicker,
+const navigation = [
+  { label: "About", href: "#about" },
+  { label: "Experience", href: "#experience" },
+  { label: "Skills", href: "#skills" },
+  { label: "Projects", href: "#projects" },
+  { label: "Arcade", href: "#arcade" },
+];
+
+function SectionHeading({
+  number,
+  eyebrow,
   title,
+  description,
 }: {
-  kicker: string;
+  number: string;
+  eyebrow: string;
   title: string;
+  description?: string;
 }) {
   return (
-    <Reveal className="mb-10">
-      <p className="font-mono text-xs tracking-[0.2em] text-primary">
-        {kicker}
-      </p>
-      <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">
-        {title}
-      </h2>
+    <Reveal className="mb-10 grid gap-5 border-t border-border pt-6 sm:mb-12 lg:grid-cols-[1fr_1.4fr] lg:gap-12">
+      <div className="flex items-center gap-3 font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
+        <span>{number}</span>
+        <span className="h-px w-8 bg-primary/50" />
+        <span>{eyebrow}</span>
+      </div>
+      <div>
+        <h2 className="max-w-2xl text-3xl font-extrabold tracking-[-0.045em] text-balance sm:text-4xl lg:text-5xl">
+          {title}
+        </h2>
+        {description && (
+          <p className="mt-4 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+            {description}
+          </p>
+        )}
+      </div>
     </Reveal>
   );
 }
@@ -151,13 +183,25 @@ function TerminalWindow() {
   const [scriptIndex, setScriptIndex] = useState(0);
   const [typed, setTyped] = useState("");
   const [deleting, setDeleting] = useState(false);
-
+  const [reducedMotion, setReducedMotion] = useState(false);
   const script = terminalScripts[scriptIndex] ?? "";
 
   useEffect(() => {
+    const query = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => setReducedMotion(query.matches);
+    update();
+    query.addEventListener("change", update);
+    return () => query.removeEventListener("change", update);
+  }, []);
+
+  useEffect(() => {
+    if (reducedMotion) {
+      setTyped(script);
+      return;
+    }
+
     const finishedTyping = typed === script;
     const finishedDeleting = deleting && typed.length === 0;
-
     const delay =
       !deleting && finishedTyping
         ? 1700
@@ -174,9 +218,7 @@ function TerminalWindow() {
         setDeleting(true);
       } else if (finishedDeleting) {
         setDeleting(false);
-        setScriptIndex(
-          (index) => (index + 1) % terminalScripts.length,
-        );
+        setScriptIndex((index) => (index + 1) % terminalScripts.length);
       } else if (deleting) {
         setTyped((current) => current.slice(0, -1));
       } else {
@@ -185,464 +227,630 @@ function TerminalWindow() {
     }, delay);
 
     return () => window.clearTimeout(timer);
-  }, [typed, deleting, script]);
+  }, [typed, deleting, script, reducedMotion]);
 
   return (
-    <div className="group relative w-full overflow-hidden rounded-2xl border border-violet-400/20 bg-[#0b0815]/95 shadow-[0_0_65px_rgba(139,92,246,0.13)]">
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-violet-400/70 to-transparent" />
-
-      <div className="flex h-12 items-center justify-between border-b border-white/[0.07] bg-white/[0.025] px-5">
-        <div className="flex gap-2">
-          <span className="size-2.5 rounded-full bg-red-400" />
-          <span className="size-2.5 rounded-full bg-amber-300" />
-          <span className="size-2.5 rounded-full bg-violet-400" />
+    <div className="terminal-window overflow-hidden rounded-2xl border border-border bg-background/90 shadow-2xl">
+      <div className="flex h-12 items-center justify-between border-b border-border bg-secondary/45 px-4 sm:px-5">
+        <div className="flex gap-2" aria-hidden="true">
+          <span className="size-2 rounded-full bg-muted-foreground/45" />
+          <span className="size-2 rounded-full bg-muted-foreground/45" />
+          <span className="size-2 rounded-full bg-primary" />
         </div>
-        <span className="font-mono text-[10px] text-slate-500">
+        <span className="font-mono text-[9px] tracking-wider text-muted-foreground sm:text-[10px]">
           ash@portfolio: ~
         </span>
-        <Code2 className="size-4 text-violet-400" />
+        <Code2 className="size-4 text-primary" aria-hidden="true" />
       </div>
 
-      <div className="min-h-[300px] p-5 font-mono text-xs leading-6 text-violet-200 sm:min-h-[340px] sm:p-7 sm:text-sm">
-        <div className="mb-4 text-violet-400/50">
-          // interactive terminal
-        </div>
-        <pre className="whitespace-pre-wrap break-words">
+      <div className="relative min-h-[270px] p-5 font-mono text-[11px] leading-6 text-foreground/80 sm:min-h-[310px] sm:p-7 sm:text-sm">
+        <div className="mb-4 text-primary/70">// live profile terminal</div>
+        <pre aria-label="Animated profile terminal" className="whitespace-pre-wrap break-words">
           {typed}
-          <span className="animate-blink text-violet-300">█</span>
+          <span className="animate-blink text-primary">_</span>
         </pre>
       </div>
 
-      <div className="flex items-center justify-between border-t border-white/[0.06] px-5 py-3 font-mono text-[10px] text-slate-500">
+      <div className="flex items-center justify-between border-t border-border px-4 py-3 font-mono text-[9px] tracking-wider text-muted-foreground sm:px-5">
         <span>ASHDEV_TERMINAL</span>
-        <span className="text-violet-400">● RUNNING</span>
+        <span className="flex items-center gap-2 text-primary">
+          <span className="size-1.5 rounded-full bg-primary" /> RUNNING
+        </span>
       </div>
+    </div>
+  );
+}
+
+function VoxelMotif() {
+  return (
+    <div className="voxel-motif" aria-hidden="true">
+      <span className="voxel-cube voxel-cube-large" />
+      <span className="voxel-cube voxel-cube-small" />
+      <span className="voxel-pixel voxel-pixel-one" />
+      <span className="voxel-pixel voxel-pixel-two" />
     </div>
   );
 }
 
 function Index() {
   const [chatOpen, setChatOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const discordUrl = `https://discord.com/users/${profile.discordId}`;
 
   return (
-    <main
-      className="relative overflow-x-hidden bg-background text-foreground"
-      style={{
-        backgroundImage: "url('/minecraft-bg.png')",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        backgroundAttachment: "fixed",
-      }}
-    >
+    <div className="min-h-screen overflow-x-clip bg-background text-foreground">
       <TapBurst />
       <CursorGlow />
       <AskAsh open={chatOpen} onOpenChange={setChatOpen} />
 
-      {/* Navigation */}
-      <nav className="fixed inset-x-0 top-0 z-50 border-b border-violet-400/10 bg-[#0b0815]/85 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-          <a
-            href="#top"
-            className="flex items-center gap-2.5 font-mono text-sm"
-          >
-            <span className="grid size-8 place-items-center rounded-lg border border-violet-400/30 bg-violet-400/10">
-              <Code2 className="size-4 text-violet-300" />
+      <a
+        href="#content"
+        className="fixed top-3 left-3 z-[80] -translate-y-24 rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground transition focus:translate-y-0"
+      >
+        Skip to content
+      </a>
+
+      <header className="fixed inset-x-0 top-0 z-50 border-b border-border/70 bg-background/85 backdrop-blur-xl">
+        <nav
+          aria-label="Main navigation"
+          className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8"
+        >
+          <a href="#top" className="group flex items-center gap-3" aria-label="Ash, back to top">
+            <span className="relative grid size-9 place-items-center rounded-lg border border-primary/35 bg-primary/10 text-primary transition group-hover:bg-primary/15">
+              <Box className="size-4" />
+              <span className="absolute -right-0.5 -bottom-0.5 size-2 bg-primary" />
             </span>
-            <span className="font-semibold text-white">
-              {profile.name}
-            </span>
-            <span className="text-violet-400">.</span>
+            <span className="text-sm font-extrabold tracking-[-0.03em]">ASHDEV</span>
           </a>
 
-          <div className="flex items-center gap-3 sm:hidden">
-            <Button asChild variant="ghost" className="font-mono text-xs text-violet-300 hover:text-white">
-              <a href="#arcade">Arcade</a>
+          <div className="hidden items-center gap-7 lg:flex">
+            {navigation.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                className="text-xs font-semibold text-muted-foreground transition hover:text-foreground"
+              >
+                {item.label}
+              </a>
+            ))}
+            <Button
+              onClick={() => setChatOpen(true)}
+              className="h-10 rounded-full bg-primary px-5 text-xs font-bold text-primary-foreground hover:bg-primary/90"
+            >
+              <Bot className="size-4" /> Ask Ash
             </Button>
           </div>
 
-          <div className="hidden items-center gap-6 font-mono text-[11px] text-slate-400 sm:flex">
-            <a href="#servers" className="transition hover:text-violet-300">
-              Servers
-            </a>
-            <a href="#skills" className="transition hover:text-violet-300">
-              Skills
-            </a>
-            <a href="#more" className="transition hover:text-violet-300">
-              More
-            </a>
-            <a href="#arcade" className="transition hover:text-violet-300">
-              Arcade
-            </a>
+          <div className="flex items-center gap-2 lg:hidden">
             <Button
               variant="ghost"
+              size="icon"
               onClick={() => setChatOpen(true)}
-              className="h-auto rounded-lg border border-violet-400/30 bg-violet-400/10 px-4 py-2 font-mono text-[11px] text-violet-200 transition hover:bg-violet-400/20 hover:text-white"
+              aria-label="Ask Ash"
+              className="rounded-full text-primary"
             >
-              Ask Ash
-              <ArrowUpRight className="ml-1 size-3" />
+              <Bot className="size-5" />
+            </Button>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-expanded={menuOpen}
+              aria-controls="mobile-navigation"
+              aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+              className="rounded-full"
+            >
+              {menuOpen ? <X className="size-5" /> : <Menu className="size-5" />}
             </Button>
           </div>
-        </div>
-      </nav>
+        </nav>
 
-      {/* Hero */}
-      <section
-        id="top"
-        className="relative flex min-h-[100svh] items-center overflow-hidden py-28 text-white"
-      >
         <div
-          aria-hidden
-          className="absolute inset-0 opacity-[0.12]"
-          style={{
-            backgroundImage:
-              "linear-gradient(rgba(167,139,250,.18) 1px, transparent 1px), linear-gradient(90deg, rgba(167,139,250,.18) 1px, transparent 1px)",
-            backgroundSize: "55px 55px",
-            maskImage:
-              "linear-gradient(to bottom, transparent, black 20%, black 80%, transparent)",
-          }}
-        />
+          id="mobile-navigation"
+          hidden={!menuOpen}
+          className="border-t border-border bg-background px-5 py-5 lg:hidden"
+        >
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-2">
+            {navigation.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={() => setMenuOpen(false)}
+                className="flex items-center justify-between rounded-xl border border-border bg-card px-4 py-3 text-sm font-semibold"
+              >
+                {item.label} <ArrowRight className="size-4 text-primary" />
+              </a>
+            ))}
+            <a
+              href="#contact"
+              onClick={() => setMenuOpen(false)}
+              className="col-span-2 flex items-center justify-between rounded-xl bg-primary px-4 py-3 text-sm font-bold text-primary-foreground"
+            >
+              Contact Ash <MessageCircle className="size-4" />
+            </a>
+          </div>
+        </div>
+      </header>
 
-        <div className="absolute -left-40 top-1/4 size-[32rem] rounded-full bg-violet-600/10 blur-[140px]" />
-        <div className="absolute right-0 top-1/4 size-[30rem] rounded-full bg-fuchsia-500/10 blur-[150px]" />
+      <main id="content">
+        <section
+          id="top"
+          className="relative isolate overflow-hidden pt-28 pb-16 sm:pt-32 lg:pt-36 lg:pb-20"
+        >
+          <div className="hero-atmosphere absolute inset-0 -z-20" aria-hidden="true" />
+          <img
+            src="/minecraft-bg.png"
+            alt=""
+            className="hero-landscape absolute inset-0 -z-10 size-full object-cover"
+          />
+          <VoxelMotif />
 
-        <div className="relative mx-auto grid w-full max-w-6xl items-center gap-14 px-6 pt-8 lg:grid-cols-[1fr_1.08fr] lg:gap-16">
-          <div className="animate-pop-in">
-            <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-400/20 bg-violet-400/[0.07] px-4 py-2 font-mono text-[10px] tracking-[0.16em] text-violet-200 sm:text-xs">
-              <span className="size-2 animate-pulse rounded-full bg-violet-400" />
-              AVAILABLE FOR OPPORTUNITIES
-            </div>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <div className="grid items-center gap-12 lg:grid-cols-[1.06fr_.94fr] lg:gap-16">
+              <div className="animate-pop-in">
+                <div className="mb-7 flex items-center gap-3 font-mono text-[9px] tracking-[0.16em] text-primary uppercase sm:text-[10px]">
+                  <span className="size-1.5 animate-pulse rounded-full bg-primary" />
+                  Community · Moderation · Development
+                </div>
 
-            {/* Profile picture and name */}
-            <div className="mb-5 flex items-center gap-4 sm:gap-5">
-              <div className="relative size-[76px] shrink-0 overflow-hidden rounded-2xl border border-violet-300/40 shadow-[0_0_35px_rgba(139,92,246,0.25)] sm:size-24">
-                <img
-                  src="/ash-pfp.png"
-                  alt="Ash profile picture"
-                  className="size-full object-cover"
-                />
-                <div className="pointer-events-none absolute inset-1 rounded-xl border border-violet-200/10" />
-              </div>
+                <div className="flex items-center gap-4 sm:gap-6">
+                  <div className="profile-frame relative shrink-0">
+                    <img
+                      src="/ash-pfp.png"
+                      alt="Ash's Minecraft-inspired profile portrait"
+                      className="size-20 rounded-[1.15rem] border border-primary/35 object-cover shadow-xl sm:size-28"
+                    />
+                    <span
+                      className="absolute -right-1 -bottom-1 size-4 border-2 border-background bg-primary"
+                      aria-hidden="true"
+                    />
+                  </div>
+                  <h1 className="text-[clamp(4rem,10vw,8rem)] leading-[0.82] font-extrabold tracking-[-0.085em]">
+                    ASH<span className="text-primary">.</span>
+                  </h1>
+                </div>
 
-              <div className="min-w-0">
-                <p className="mb-1 font-mono text-[10px] tracking-[0.2em] text-violet-300">
-                  INTRODUCING
+                <p className="mt-8 max-w-xl text-xl leading-snug font-semibold tracking-[-0.025em] text-foreground sm:text-2xl">
+                  {profile.role}. Community manager.
+                  <br />
+                  <span className="text-muted-foreground">Minecraft & Discord staff.</span>
                 </p>
-                <h1 className="break-words text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
-                  {profile.name}
-                  <span className="text-violet-400">.</span>
-                </h1>
+                <p className="mt-5 max-w-lg text-sm leading-7 text-muted-foreground sm:text-base">
+                  Building communities, coordinating staff teams, and creating better server
+                  experiences through hands-on leadership.
+                </p>
+
+                <div className="mt-8 flex flex-wrap gap-3">
+                  <Button
+                    asChild
+                    className="h-12 rounded-full bg-primary px-6 text-sm font-bold text-primary-foreground shadow-[var(--glow-primary)] hover:bg-primary/90"
+                  >
+                    <a href="#projects">
+                      View projects <ArrowRight className="size-4" />
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="h-12 rounded-full border-border bg-card/60 px-6 text-sm font-semibold hover:border-primary/45 hover:bg-card"
+                  >
+                    <a href="#contact">Contact me</a>
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => setChatOpen(true)}
+                    className="h-12 rounded-full px-3 text-sm text-muted-foreground hover:bg-secondary hover:text-primary"
+                  >
+                    <Bot className="size-4" /> Ask AshBot
+                  </Button>
+                </div>
               </div>
+
+              <Reveal delay={140} className="relative">
+                <div className="mb-4 flex items-center justify-between font-mono text-[9px] tracking-[0.16em] text-muted-foreground uppercase">
+                  <span>Profile console / 001</span>
+                  <span className="text-primary">Online</span>
+                </div>
+                <TerminalWindow />
+                <div className="mt-4 flex items-center gap-3 rounded-xl border border-border bg-card/65 px-4 py-3 backdrop-blur-md">
+                  <Blocks className="size-5 shrink-0 text-primary" />
+                  <p className="text-xs leading-5 text-muted-foreground">
+                    Practical experience across{" "}
+                    <span className="font-semibold text-foreground">70+ communities</span>, from
+                    staff member to owner.
+                  </p>
+                </div>
+              </Reveal>
             </div>
 
-            <p className="max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-              Building communities, managing teams, and creating better server
-              experiences.
-            </p>
-
-            <p className="mt-5 font-mono text-lg text-violet-300 sm:text-xl">
-              {profile.role}
-              <span className="animate-blink">_</span>
-            </p>
-
-            <div className="mt-7 flex flex-wrap gap-2.5">
-              {[
-                "Discord Management",
-                "Minecraft",
-                "Community Building",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="rounded-full border border-violet-400/20 bg-violet-400/[0.06] px-3.5 py-2 font-mono text-[10px] tracking-wide text-violet-200 sm:text-xs"
+            <Reveal className="mt-14 grid grid-cols-2 border-y border-border lg:mt-16 lg:grid-cols-4">
+              {stats.map((stat, index) => (
+                <div
+                  key={stat.label}
+                  className={cn(
+                    "py-5 sm:py-6",
+                    index % 2 === 1 && "border-l border-border pl-5 sm:pl-7",
+                    index > 1 && "border-t border-border lg:border-t-0",
+                    index === 2 && "lg:border-l lg:pl-7",
+                    index === 0 && "lg:pr-7",
+                  )}
                 >
-                  {tag}
-                </span>
-              ))}
-            </div>
-
-            <div className="mt-9 flex flex-wrap gap-3">
-              <Button
-                asChild
-                className="rounded-xl bg-violet-500 px-6 text-white shadow-lg shadow-violet-500/20 transition hover:bg-violet-400"
-              >
-                <a href="#servers">
-                  Explore My Experience
-                  <ArrowUpRight className="ml-2 size-4" />
-                </a>
-              </Button>
-
-              <Button
-                variant="outline"
-                onClick={() => setChatOpen(true)}
-                className="rounded-xl border-violet-400/30 bg-violet-400/5 text-violet-200 hover:bg-violet-400/15 hover:text-white"
-              >
-                Ask Ash
-              </Button>
-            </div>
-
-            <div className="mt-12 grid max-w-md grid-cols-3 gap-5 border-t border-violet-400/15 pt-7">
-              {stats.slice(0, 3).map((stat) => (
-                <div key={stat.label}>
-                  <p className="text-2xl font-bold text-white sm:text-3xl">
+                  <p className="text-2xl font-extrabold tracking-[-0.04em] sm:text-3xl">
                     <Counter to={stat.value} suffix={stat.suffix} />
                   </p>
-                  <p className="mt-1 font-mono text-[9px] tracking-wider text-slate-400 sm:text-[10px]">
+                  <p className="mt-1 font-mono text-[9px] leading-4 tracking-wide text-muted-foreground uppercase sm:text-[10px]">
                     {stat.label}
                   </p>
                 </div>
               ))}
-            </div>
+            </Reveal>
           </div>
+        </section>
 
-          <Reveal delay={150}>
-            <TerminalWindow />
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Ownership */}
-      <section className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-20 backdrop-blur-md">
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle
-            kicker="01 / OWNERSHIP"
-            title="Communities I've Built"
-          />
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            {ownership.map((item, index) => (
-              <Reveal key={item} delay={index * 80}>
-                <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
-                  <div className="mb-5 grid size-12 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
-                    <Crown className="size-5 text-violet-300" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white">{item}</h3>
-                </div>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Servers */}
-      <section
-        id="servers"
-        className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle
-            kicker="02 / EXPERIENCE"
-            title="Where I've Worked"
-          />
-
-          <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {servers.map((server, index) => {
-              const TierIcon = tierStyle[server.tier].icon;
-
-              return (
-                <Reveal key={server.server} delay={index * 50}>
-                  <div className="group h-full rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:-translate-y-1 hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
-                    <div className="mb-5 flex items-center justify-between">
-                      <div className="grid size-11 place-items-center rounded-xl border border-violet-400/20 bg-violet-400/10">
-                        <TierIcon className="size-5 text-violet-300" />
-                      </div>
-                      <span
-                        className={cn(
-                          "rounded-full px-3 py-1 font-mono text-[9px] tracking-wider",
-                          tierStyle[server.tier].cls,
-                        )}
-                      >
-                        {tierStyle[server.tier].label}
-                      </span>
-                    </div>
-
-                    <h3 className="text-lg font-bold text-white">
-                      {server.server}
-                    </h3>
-                    <p className="mt-2 text-sm text-slate-300">
-                      {server.position}
-                    </p>
-                    <p className="mt-3 font-mono text-xs text-violet-300">
-                      {server.members} members
-                    </p>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-
-          <div className="mt-16">
-            <SectionTitle
-              kicker="03 / STAFF ROLES"
-              title="My Roles & Responsibilities"
+        <section id="about" className="scroll-mt-20 py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <SectionHeading
+              number="01"
+              eyebrow="About"
+              title="Community first. Built through real experience."
+              description="A concise look at what I do, the responsibilities I've held, and the communities I've helped shape."
             />
 
-            <div className="grid gap-4 sm:grid-cols-2">
-              {roles.map((role, index) => (
-                <Reveal key={role} delay={index * 60}>
-                  <div className="flex h-full items-center gap-4 rounded-2xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/35">
-                    <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
-                      <Gavel className="size-5 text-violet-300" />
-                    </div>
-                    <h3 className="font-semibold text-white">{role}</h3>
+            <div className="grid gap-5 lg:grid-cols-[1.15fr_.85fr]">
+              <Reveal>
+                <article className="surface-card relative h-full overflow-hidden p-6 sm:p-9">
+                  <div
+                    className="absolute top-0 right-0 size-24 border-b border-l border-border bg-secondary/35"
+                    aria-hidden="true"
+                  />
+                  <span className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
+                    Hello, I am Ash
+                  </span>
+                  <h3 className="mt-6 max-w-xl text-2xl leading-tight font-bold tracking-[-0.035em] sm:text-3xl">
+                    A new developer with hands-on staff and community management experience.
+                  </h3>
+                  <p className="mt-5 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
+                    I've worked across Discord and Minecraft communities as a staff member,
+                    moderator, administrator, manager, founder, and owner. My experience covers
+                    day-to-day moderation, reports, staff coordination, applications, announcements,
+                    and server systems.
+                  </p>
+                  <div className="mt-8 flex flex-wrap gap-2">
+                    {["Discord", "Minecraft", "Staff leadership", "New developer"].map((item) => (
+                      <span
+                        key={item}
+                        className="rounded-full border border-border bg-background/50 px-3 py-1.5 font-mono text-[10px] text-muted-foreground"
+                      >
+                        {item}
+                      </span>
+                    ))}
                   </div>
-                </Reveal>
-              ))}
+                </article>
+              </Reveal>
+
+              <Reveal delay={100}>
+                <article className="h-full rounded-2xl border border-primary/25 bg-primary/[0.055] p-6 sm:p-8">
+                  <div className="mb-6 flex items-center gap-3">
+                    <Crown className="size-5 text-primary" />
+                    <h3 className="font-bold">Ownership & coordination</h3>
+                  </div>
+                  <ul className="space-y-5">
+                    {ownership.map((item) => (
+                      <li key={item} className="flex gap-3 text-sm leading-6 text-muted-foreground">
+                        <span className="mt-1 grid size-5 shrink-0 place-items-center rounded-md bg-primary/15 text-primary">
+                          <Check className="size-3" />
+                        </span>
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </Reveal>
             </div>
           </div>
-        </div>
-      </section>
-            {/* Skills */}
-      <section
-        id="skills"
-        className="relative border-y border-violet-400/10 bg-[#0b0815]/85 py-24 backdrop-blur-md"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle kicker="04 / SKILLS" title="What I Bring" />
+        </section>
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {skills.map((skill, index) => {
-              const Icon = skillIcons[index % skillIcons.length];
+        <section id="experience" className="section-band scroll-mt-20 py-20 sm:py-24">
+          <span id="servers" className="absolute -top-20" aria-hidden="true" />
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <SectionHeading
+              number="02"
+              eyebrow="Experience"
+              title="Roles earned inside real communities."
+              description="Featured Discord and Minecraft staff experience, from junior moderation to community ownership."
+            />
 
-              return (
-                <Reveal key={skill.title} delay={index * 50}>
-                  <div className="flex h-full items-center gap-4 rounded-xl border border-violet-400/15 bg-white/[0.035] p-5 transition hover:border-violet-400/40 hover:bg-violet-400/[0.06]">
-                    <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-violet-400/10">
-                      <Icon className="size-5 text-violet-300" />
-                    </div>
+            <div className="experience-timeline">
+              {servers.map((server, index) => {
+                const tier = tierDetails[server.tier];
+                const TierIcon = tier.icon;
+                return (
+                  <Reveal key={server.server} delay={Math.min(index * 45, 220)}>
+                    <article className="experience-row group grid gap-4 py-5 sm:grid-cols-[46px_1fr_auto] sm:items-center sm:gap-6 sm:py-6">
+                      <div className="flex items-center gap-4 sm:block">
+                        <span className="font-mono text-[10px] text-muted-foreground">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                        <span
+                          className={cn(
+                            "inline-flex w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[9px] sm:hidden",
+                            tier.className,
+                          )}
+                        >
+                          {tier.label}
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-4">
+                        <span className="grid size-12 shrink-0 place-items-center rounded-xl border border-border bg-secondary/60 text-primary transition duration-300 group-hover:border-primary/40 group-hover:bg-primary/10">
+                          <TierIcon className="size-5" />
+                        </span>
+                        <div>
+                          <h3 className="text-lg font-bold tracking-[-0.025em] sm:text-xl">
+                            {server.server}
+                          </h3>
+                          <p className="mt-1 text-sm text-muted-foreground">{server.position}</p>
+                        </div>
+                      </div>
+                      <div className="flex items-center justify-between gap-4 pl-16 sm:block sm:pl-0 sm:text-right">
+                        <span
+                          className={cn(
+                            "hidden w-fit items-center gap-1.5 rounded-full border px-2.5 py-1 font-mono text-[9px] sm:inline-flex",
+                            tier.className,
+                          )}
+                        >
+                          {tier.label}
+                        </span>
+                        <p className="font-mono text-[10px] text-muted-foreground sm:mt-2">
+                          <Users className="mr-1.5 inline size-3 text-primary" /> {server.members}{" "}
+                          members
+                        </p>
+                      </div>
+                    </article>
+                  </Reveal>
+                );
+              })}
+            </div>
 
-                    <div>
-                      <h3 className="font-semibold text-white">
-                        {skill.title}
-                      </h3>
-                      <p className="mt-1 text-xs leading-relaxed text-slate-400">
-                        {skill.text}
-                      </p>
-                    </div>
-                  </div>
-                </Reveal>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      {/* More */}
-      <section
-        id="more"
-        className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle
-            kicker="05 / MORE ABOUT ME"
-            title="Beyond the Roles"
-          />
-
-          <div className="grid gap-5 sm:grid-cols-2">
-            {extras.map((extra, index) => (
-              <Reveal key={extra} delay={index * 70}>
-                <div className="rounded-2xl border border-violet-400/15 bg-white/[0.035] p-6 transition hover:border-violet-400/35">
-                  <div className="mb-4 grid size-11 place-items-center rounded-xl bg-violet-400/10">
-                    <Sparkles className="size-5 text-violet-300" />
-                  </div>
-                  <h3 className="text-lg font-bold text-white">{extra}</h3>
+            <Reveal className="mt-8 rounded-2xl border border-border bg-card/60 p-5 sm:p-7">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div>
+                  <h3 className="font-bold">Roles & applications</h3>
+                  <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                    HoneyMC is listed as an application, not a confirmed staff position.
+                  </p>
                 </div>
+                <div className="flex flex-wrap gap-2">
+                  {roles.map((role) => (
+                    <span
+                      key={role}
+                      className={cn(
+                        "rounded-full border px-3 py-2 text-xs font-semibold",
+                        role === "Builder"
+                          ? "border-primary/25 bg-primary/10 text-primary"
+                          : "border-border bg-secondary/50 text-secondary-foreground",
+                      )}
+                    >
+                      {role === "Builder" && <Hammer className="mr-1.5 inline size-3" />}
+                      {role}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+
+            <div className="mt-10">
+              <Reveal className="mb-5 flex flex-wrap items-end justify-between gap-2">
+                <h3 className="text-lg font-bold">Additional confirmed staff experience</h3>
+                <p className="text-xs text-muted-foreground">
+                  Server names and exact roles were not supplied.
+                </p>
               </Reveal>
-            ))}
-          </div>
-
-          {additionalStaffExperience.length > 0 && (
-            <div className="mt-14">
-              <h3 className="mb-6 text-xl font-bold text-white">
-                Additional Staff Experience
-              </h3>
-
-              <div className="grid gap-4 sm:grid-cols-3">
+              <div className="grid gap-3 sm:grid-cols-3">
                 {additionalStaffExperience.map((members) => (
-                  <div
-                    key={members}
-                    className="rounded-xl border border-violet-400/15 bg-white/[0.035] p-5"
-                  >
-                    <Users className="mb-3 size-5 text-violet-300" />
-                    <h4 className="text-2xl font-bold text-white">
-                      {members}+
-                    </h4>
-                    <p className="mt-1 text-sm text-slate-400">
-                      Member server experience
-                    </p>
-                  </div>
+                  <Reveal key={members}>
+                    <article className="flex items-center gap-4 rounded-xl border border-border bg-background/45 p-5">
+                      <Users className="size-5 text-primary" />
+                      <div>
+                        <p className="text-xl font-extrabold">
+                          {members}
+                          <span className="text-primary">+</span>
+                        </p>
+                        <p className="text-xs text-muted-foreground">Member server experience</p>
+                      </div>
+                    </article>
+                  </Reveal>
                 ))}
               </div>
             </div>
-          )}
-        </div>
-      </section>
+          </div>
+        </section>
 
-      {/* Arcade */}
-      <section
-        className="relative border-y border-violet-400/10 bg-[#0b0815]/90 py-24 backdrop-blur-md"
-      >
-        <div className="mx-auto max-w-6xl px-6">
-          <SectionTitle
-            kicker="06 / INTERACTIVE"
-            title="Take a Break"
-          />
+        <section id="skills" className="scroll-mt-20 py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <SectionHeading
+              number="03"
+              eyebrow="Skills"
+              title="Calm moderation. Clear communication."
+              description="Practical skills developed through reports, rule enforcement, staff coordination, and player support."
+            />
 
-          <p className="mb-8 max-w-xl text-sm leading-relaxed text-slate-400">
-            A little something to play with while you're here. Have fun!
-          </p>
-
-          <Arcade />
-        </div>
-      </section>
-
-      {/* Contact */}
-      <section className="relative bg-[#0b0815]/90 py-24 backdrop-blur-md">
-        <div className="mx-auto max-w-4xl px-6 text-center">
-          <Reveal>
-            <div className="mx-auto mb-6 grid size-14 place-items-center rounded-2xl border border-violet-400/25 bg-violet-400/10">
-              <Handshake className="size-7 text-violet-300" />
+            <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              {skills.map((skill, index) => {
+                const Icon = skillIcons[index] ?? Gavel;
+                return (
+                  <Reveal key={skill.title} delay={Math.min(index * 45, 180)}>
+                    <article className="skill-card group h-full rounded-2xl border border-border bg-card p-5 transition duration-300 hover:-translate-y-1 hover:border-primary/35 sm:p-6">
+                      <div className="flex items-start justify-between gap-4">
+                        <span className="grid size-10 place-items-center rounded-lg bg-secondary text-primary transition group-hover:bg-primary/10">
+                          <Icon className="size-4" />
+                        </span>
+                        <span className="font-mono text-[9px] text-muted-foreground">
+                          {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <h3 className="mt-5 font-bold">{skill.title}</h3>
+                      <p className="mt-2 text-xs leading-6 text-muted-foreground">{skill.text}</p>
+                    </article>
+                  </Reveal>
+                );
+              })}
             </div>
 
-            <p className="font-mono text-xs tracking-[0.2em] text-violet-300">
-              07 / LET'S CONNECT
-            </p>
+            <Reveal className="mt-10 border-t border-border pt-7">
+              <div className="grid gap-5 lg:grid-cols-[220px_1fr]">
+                <h3 className="flex items-center gap-2 text-sm font-bold">
+                  <Sparkles className="size-4 text-primary" /> Supporting experience
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {extras.map((extra) => (
+                    <span
+                      key={extra}
+                      className="rounded-lg border border-border bg-secondary/35 px-3 py-2 text-xs text-muted-foreground"
+                    >
+                      {extra}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
 
-            <h2 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-5xl">
-              Have a project in mind?
-            </h2>
+        <section id="projects" className="section-band scroll-mt-20 py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <SectionHeading
+              number="04"
+              eyebrow="Selected projects"
+              title="Communities and interactive work."
+              description="Existing server projects and the interactive features built into this portfolio—no placeholder links."
+            />
 
-            <p className="mx-auto mt-5 max-w-xl text-sm leading-relaxed text-slate-400 sm:text-base">
-              Whether you're building a community, growing a server, or looking
-              for someone to help manage your team, let's talk.
-            </p>
+            <div className="grid gap-5 lg:grid-cols-3">
+              {projects.map((project, index) => {
+                const ProjectIcon = index === 0 ? Crown : index === 1 ? Blocks : Code2;
+                return (
+                  <Reveal key={project.name} delay={index * 80}>
+                    <article className="project-card group flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card transition duration-300 hover:-translate-y-1 hover:border-primary/40">
+                      <div className="project-visual relative flex h-40 items-center justify-center overflow-hidden border-b border-border">
+                        <div className="project-cube" aria-hidden="true">
+                          <ProjectIcon className="size-8 text-primary" />
+                        </div>
+                        <span className="absolute top-4 left-4 font-mono text-[9px] tracking-widest text-muted-foreground">
+                          PROJECT / {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <div className="flex flex-1 flex-col p-6">
+                        <p className="font-mono text-[9px] tracking-[0.14em] text-primary uppercase">
+                          {project.category}
+                        </p>
+                        <h3 className="mt-3 text-xl font-bold tracking-[-0.03em]">
+                          {project.name}
+                        </h3>
+                        <p className="mt-3 text-sm leading-6 text-muted-foreground">
+                          {project.description}
+                        </p>
+                        <p className="mt-5 font-mono text-[10px] text-muted-foreground">
+                          {project.meta}
+                        </p>
+                        <div className="mt-auto flex items-center justify-between gap-3 pt-7">
+                          <a
+                            href={project.href}
+                            className="inline-flex items-center gap-2 text-xs font-bold text-foreground transition hover:text-primary"
+                          >
+                            {project.action} <ArrowUpRight className="size-4 text-primary" />
+                          </a>
+                          {index === 2 && (
+                            <button
+                              type="button"
+                              onClick={() => setChatOpen(true)}
+                              className="text-xs font-semibold text-muted-foreground underline decoration-border underline-offset-4 transition hover:text-primary"
+                            >
+                              Ask AshBot
+                            </button>
+                          )}
+                        </div>
+                      </div>
+                    </article>
+                  </Reveal>
+                );
+              })}
+            </div>
+          </div>
+        </section>
 
-            <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <DiscordButton />
+        <Arcade />
 
-              <Button
-                onClick={() => setChatOpen(true)}
-                variant="outline"
-                className="rounded-xl border-violet-400/30 bg-violet-400/5 text-violet-200 hover:bg-violet-400/15 hover:text-white"
+        <section id="contact" className="scroll-mt-20 py-20 sm:py-24">
+          <div className="mx-auto max-w-7xl px-5 sm:px-8">
+            <Reveal>
+              <div className="contact-panel relative overflow-hidden rounded-3xl border border-primary/25 px-6 py-12 sm:px-10 sm:py-16 lg:px-16">
+                <div className="contact-grid absolute inset-0" aria-hidden="true" />
+                <div className="relative grid items-end gap-10 lg:grid-cols-[1.2fr_.8fr]">
+                  <div>
+                    <p className="font-mono text-[10px] tracking-[0.18em] text-primary uppercase">
+                      06 / Start a conversation
+                    </p>
+                    <h2 className="mt-5 max-w-2xl text-4xl leading-[1.02] font-extrabold tracking-[-0.055em] text-balance sm:text-5xl lg:text-6xl">
+                      Have a community to build?
+                    </h2>
+                    <p className="mt-5 max-w-xl text-sm leading-7 text-muted-foreground sm:text-base">
+                      Whether you're growing a server, building a staff team, or looking for
+                      community support, reach out on Discord.
+                    </p>
+                  </div>
+                  <div className="flex flex-col items-start gap-5 lg:items-end">
+                    <DiscordButton label="Open Discord profile" />
+                    <Button
+                      variant="ghost"
+                      onClick={() => setChatOpen(true)}
+                      className="rounded-full px-5 text-sm text-muted-foreground hover:bg-secondary hover:text-primary"
+                    >
+                      <Bot className="size-4" /> Ask about my experience first
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      </main>
+
+      <footer className="border-t border-border bg-card/35">
+        <div className="mx-auto max-w-7xl px-5 py-10 sm:px-8">
+          <div className="flex flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <a href="#top" className="flex items-center gap-3 text-sm font-extrabold">
+                <span className="grid size-9 place-items-center rounded-lg border border-primary/35 bg-primary/10 text-primary">
+                  <Box className="size-4" />
+                </span>
+                ASHDEV<span className="text-primary">.</span>
+              </a>
+              <p className="mt-3 text-xs text-muted-foreground">
+                Community management · Minecraft · Development
+              </p>
+            </div>
+            <div className="flex flex-wrap gap-x-5 gap-y-3 text-xs font-semibold text-muted-foreground">
+              {navigation.slice(0, 4).map((item) => (
+                <a key={item.href} href={item.href} className="transition hover:text-primary">
+                  {item.label}
+                </a>
+              ))}
+              <a
+                href={discordUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 transition hover:text-primary"
               >
-                Ask Ash
-                <ArrowUpRight className="ml-2 size-4" />
-              </Button>
+                Discord <ArrowUpRight className="size-3" />
+              </a>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-violet-400/10 bg-[#080610] py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-center sm:flex-row sm:text-left">
-          <p className="font-mono text-xs text-slate-500">
-            © {new Date().getFullYear()} {profile.name}. All rights reserved.
-          </p>
-
-          <p className="font-mono text-[10px] tracking-wider text-violet-400/70">
-            BUILT WITH PASSION
-          </p>
+          </div>
+          <div className="mt-8 flex flex-col gap-2 border-t border-border pt-5 font-mono text-[9px] tracking-wide text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
+            <p>© {new Date().getFullYear()} ASH. ALL RIGHTS RESERVED.</p>
+            <p>BUILT AROUND COMMUNITY.</p>
+          </div>
         </div>
       </footer>
-    </main>
+    </div>
   );
-              }
+}
