@@ -515,6 +515,10 @@ function Index() {
                     day-to-day moderation, reports, staff coordination, applications, announcements,
                     and server systems.
                   </p>
+                  <p className="mt-6 inline-flex items-center gap-2 rounded-full border border-primary/25 bg-primary/[0.07] px-3 py-1.5 font-mono text-[10px] tracking-wide text-primary">
+                    <Blocks className="size-3" />
+                    Minecraft: {profile.minecraftPlatform} player
+                  </p>
                   <div className="mt-8 flex flex-wrap gap-2">
                     {["Discord", "Minecraft", "Staff leadership", "New developer"].map((item) => (
                       <span

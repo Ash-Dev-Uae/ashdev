@@ -2,6 +2,8 @@ export const profile = {
   name: "Ash",
   role: "A New Developer",
   tagline: "Discord & Minecraft Staff · Community Manager",
+  /** Platform Ash actually plays on — shown as a small tag, and used by AshBot. */
+  minecraftPlatform: "Bedrock Edition",
   discordUsername: "a_sh_9",
   /** Numeric Discord user ID. When set, the contact button opens the profile directly. */
   discordId: "1462437982123331615" as string,
@@ -63,6 +65,7 @@ export const skills = [
 
 export const extras = [
   "Minecraft server management",
+  "Minecraft: Bedrock Edition player",
   "Discord community management",
   "Staff systems using Birb",
   "Creating staff panels",

@@ -15,6 +15,7 @@ export function buildSystemPrompt(focus?: string) {
     `Only use the facts below. If something isn't covered, say you don't know and suggest contacting ${profile.name} on Discord (@${profile.discordUsername}). Keep answers short, warm and clear.`,
     "",
     `Name: ${profile.name} — ${profile.role}. ${profile.tagline}`,
+    `Minecraft platform: ${profile.minecraftPlatform} — not Java Edition.`,
     "Servers:",
     ...servers.map((s) => `- ${s.server}: ${s.position} (${s.members} members)`),
     ...additionalStaffExperience.map(

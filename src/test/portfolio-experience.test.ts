@@ -1,5 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { additionalStaffExperience, servers, stats } from "@/lib/portfolio-data";
+import {
+  additionalStaffExperience,
+  extras,
+  profile,
+  servers,
+  stats,
+} from "@/lib/portfolio-data";
 import { buildSystemPrompt } from "@/lib/ash-prompt";
 
 describe("Confirmed experience", () => {
@@ -23,6 +29,13 @@ describe("Confirmed experience", () => {
     expect(buildSystemPrompt()).toContain("- eSports: Staff Member (1,500 members)");
     expect(stats.find((stat) => stat.label === "Featured staff roles")?.value).toBe(
       servers.length,
+    );
+  });
+  it("shows Bedrock Edition as the Minecraft platform", () => {
+    expect(profile.minecraftPlatform).toBe("Bedrock Edition");
+    expect(extras).toContain("Minecraft: Bedrock Edition player");
+    expect(buildSystemPrompt()).toContain(
+      "Minecraft platform: Bedrock Edition — not Java Edition.",
     );
   });
 });
